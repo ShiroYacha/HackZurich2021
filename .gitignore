@@ -229,3 +229,7 @@ dmypy.json
 cython_debug/
 
 # End of https://www.toptal.com/developers/gitignore/api/dart,flutter,python
+
+serviceAccount.json
+
+node_modules

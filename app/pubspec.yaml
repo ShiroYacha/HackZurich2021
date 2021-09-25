@@ -18,7 +18,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: '>=2.13.4 <3.0.0'
 
 dependencies:
   flutter:
@@ -32,10 +32,19 @@ dependencies:
   pinput: ^1.2.0
   speech_to_text: ^5.1.1
   lottie: ^1.2.1
+  cloud_firestore: ^2.5.3
+  freezed_annotation: ^0.14.3
+  google_maps_flutter: ^2.0.10
+  material_design_icons_flutter: ^5.0.5955-rc.1
+  flutter_custom_clippers: ^2.0.0
+  flutter_slidable: ^1.0.0-dev.9
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  build_runner: ^2.0.0
+  json_serializable: ^4.0.0
+  freezed: 0.14.2
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
