@@ -85,10 +85,27 @@ class HomePage extends HookWidget {
           ),
           SafeArea(
             child: Padding(
-                padding: const EdgeInsets.all(24.0),
-                child: Text('OASIS',
+              padding: const EdgeInsets.all(24.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'OASIS',
                     style: logoTextStyle.copyWith(
-                        color: Theme.of(context).primaryColor))),
+                      color: Theme.of(context).colorScheme.secondary,
+                      backgroundColor: Colors.white54,
+                    ),
+                  ),
+                  Text(
+                    'Find your community',
+                    style: subtitleTextStyle.copyWith(
+                      color: Theme.of(context).colorScheme.secondary,
+                      backgroundColor: Colors.white54,
+                    ),
+                  )
+                ],
+              ),
+            ),
           ),
         ],
       ),

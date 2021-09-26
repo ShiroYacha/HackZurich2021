@@ -4,10 +4,10 @@ import 'package:google_fonts/google_fonts.dart';
 final themeData = ThemeData(
   primarySwatch: Colors.brown,
   colorScheme: ColorScheme.fromSwatch(
-    accentColor: Colors.purple,
+    accentColor: Colors.indigo,
   ),
   buttonTheme: ButtonThemeData(
-    buttonColor: Colors.purple,
+    buttonColor: Colors.indigo,
     shape: RoundedRectangleBorder(),
     textTheme: ButtonTextTheme.accent,
   ),
@@ -18,7 +18,7 @@ final themeData = ThemeData(
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
-      primary: Colors.purple,
+      primary: Colors.indigo,
     ),
   ),
   outlinedButtonTheme: OutlinedButtonThemeData(
