@@ -26,8 +26,20 @@ U? buildIf<U>(Map<bool Function(), U Function()> map, {U? Function()? orElse}) {
 }
 
 @freezed
+class ErrorResult with _$ErrorResult {
+  factory ErrorResult({
+    @JsonKey(name: 'message') required String message,
+    @JsonKey(name: 'status') required String status,
+  }) = _ErrorResult;
+
+  factory ErrorResult.fromJson(Map<String, dynamic> json) =>
+      _$ErrorResultFromJson(json);
+}
+
+@freezed
 class User with _$User {
   factory User({
+    required String id,
     required String name,
     required List<String> communityIds,
     String? avatarUrl,
@@ -36,9 +48,35 @@ class User with _$User {
 }
 
 @freezed
+class UsersUnion with _$UsersUnion {
+  const UsersUnion._();
+  factory UsersUnion({
+    @JsonKey(name: 'users') required List<User> users,
+  }) = Users;
+
+  factory UsersUnion.error(ErrorResult error) = UsersError;
+
+  factory UsersUnion.loading() = UsersLoading;
+
+  factory UsersUnion.fromJson(Map<String, dynamic> json) =>
+      _$UsersUnionFromJson(json);
+
+  User? tryGetUserById(String id) {
+    for (var user in maybeMap((value) => value.users, orElse: () => <User>[])) {
+      if (user.id == id) return user;
+    }
+    return null;
+  }
+}
+
+@freezed
 class Community with _$Community {
   factory Community({
+    required String id,
     required String name,
+    required String label,
+    required String invitation_code,
+    required String magic_word,
     String? backgroundUrl,
   }) = _Community;
   factory Community.fromJson(Map<String, dynamic> json) =>
@@ -46,17 +84,81 @@ class Community with _$Community {
 }
 
 @freezed
+class CommunitiesUnion with _$CommunitiesUnion {
+  const CommunitiesUnion._();
+  factory CommunitiesUnion({
+    @JsonKey(name: 'communitiess') required List<Community> communities,
+  }) = Communities;
+
+  factory CommunitiesUnion.error(ErrorResult error) = CommunitiesError;
+
+  factory CommunitiesUnion.loading() = CommunitiesLoading;
+
+  factory CommunitiesUnion.fromJson(Map<String, dynamic> json) =>
+      _$CommunitiesUnionFromJson(json);
+
+  Community? tryGetCommunitiesById(String id) {
+    for (var communities in maybeMap((value) => value.communities,
+        orElse: () => <Community>[])) {
+      if (communities.id == id) return communities;
+    }
+    return null;
+  }
+}
+
+@freezed
 class Event with _$Event {
+  const Event._();
   factory Event({
+    required String id,
     required String name,
+    required EventStatus status,
     required String communityId,
     required EventCategory category,
     required String description,
     required String organizerId,
-    required List<String> participantIds,
+    required List<String> yesParticipantIds,
+    required List<String> maybeParticipantIds,
+    required List<String> noParticipantIds,
     String? backgroundUrl,
   }) = _Event;
   factory Event.fromJson(Map<String, dynamic> json) => _$EventFromJson(json);
+
+  EventDecision? participantDecision(String uid) => buildIf({
+        () => yesParticipantIds.contains(uid): () => EventDecision.yes,
+        () => maybeParticipantIds.contains(uid): () => EventDecision.maybe,
+        () => noParticipantIds.contains(uid): () => EventDecision.no,
+      });
+}
+
+@freezed
+class EventsUnion with _$EventsUnion {
+  const EventsUnion._();
+  factory EventsUnion({
+    @JsonKey(name: 'events') required List<Event> events,
+  }) = Events;
+
+  factory EventsUnion.error(ErrorResult error) = EventsError;
+
+  factory EventsUnion.loading() = EventsLoading;
+
+  factory EventsUnion.fromJson(Map<String, dynamic> json) =>
+      _$EventsUnionFromJson(json);
+
+  Event? tryGetEventById(String id) {
+    for (var event
+        in maybeMap((value) => value.events, orElse: () => <Event>[])) {
+      if (event.id == id) return event;
+    }
+    return null;
+  }
+}
+
+enum EventStatus {
+  archived,
+  pending,
+  upcoming,
+  completed,
 }
 
 enum EventDecision {
@@ -71,6 +173,13 @@ extension EventDecisionExtension on EventDecision {
         () => this == EventDecision.yes: () => 'Yes',
         () => this == EventDecision.maybe: () => 'Maybe',
         () => this == EventDecision.no: () => 'No',
+      }) ??
+      '';
+  String get longTitle =>
+      buildIf({
+        () => this == EventDecision.yes: () => 'Yes, I\'m going',
+        () => this == EventDecision.maybe: () => 'Maybe going',
+        () => this == EventDecision.no: () => 'Not going',
       }) ??
       '';
   IconData get iconCircled =>
@@ -205,4 +314,29 @@ class EventSectionItemUnion with _$EventSectionItemUnion {
 
   factory EventSectionItemUnion.fromJson(Map<String, dynamic> json) =>
       _$EventSectionItemUnionFromJson(json);
+}
+
+@freezed
+class EventSectionItemsUnion with _$EventSectionItemsUnion {
+  const EventSectionItemsUnion._();
+  factory EventSectionItemsUnion({
+    @JsonKey(name: 'eventSections')
+        required List<EventSectionItemUnion> eventSectionItems,
+  }) = EventSectionItems;
+
+  factory EventSectionItemsUnion.error(ErrorResult error) =
+      EventSectionItemsError;
+
+  factory EventSectionItemsUnion.loading() = EventSectionItemsLoading;
+
+  factory EventSectionItemsUnion.fromJson(Map<String, dynamic> json) =>
+      _$EventSectionItemsUnionFromJson(json);
+
+  EventSectionItemUnion? tryGetEventSectionById(String id) {
+    for (var eventSection in maybeMap((value) => value.eventSectionItems,
+        orElse: () => <EventSectionItemUnion>[])) {
+      if (eventSection.id == id) return eventSection;
+    }
+    return null;
+  }
 }

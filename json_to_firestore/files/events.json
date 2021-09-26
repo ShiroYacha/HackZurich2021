@@ -1,0 +1,17 @@
+[
+    {
+        "id": "event1",
+        "community_id": "community1",
+        "name": "Go for a hike",
+        "category": "hiking",
+        "description": "Let's go for a short hike near Zürich. Maybe can try out Via Ferrata or just a casual hike nearby :)",
+        "background_url": "assets/images/hz_roadtrip.gif",
+        "organizer_id": "user1",
+        "status": "pending",
+        "start_at": null,
+        "end_at": null,
+        "yes_participant_ids": ["user1", "user4"],
+        "maybe_participant_ids": ["user2"],
+        "no_participant_ids": []
+    }
+]

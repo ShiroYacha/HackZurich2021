@@ -12,6 +12,190 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
+ErrorResult _$ErrorResultFromJson(Map<String, dynamic> json) {
+  return _ErrorResult.fromJson(json);
+}
+
+/// @nodoc
+class _$ErrorResultTearOff {
+  const _$ErrorResultTearOff();
+
+  _ErrorResult call(
+      {@JsonKey(name: 'message') required String message,
+      @JsonKey(name: 'status') required String status}) {
+    return _ErrorResult(
+      message: message,
+      status: status,
+    );
+  }
+
+  ErrorResult fromJson(Map<String, Object> json) {
+    return ErrorResult.fromJson(json);
+  }
+}
+
+/// @nodoc
+const $ErrorResult = _$ErrorResultTearOff();
+
+/// @nodoc
+mixin _$ErrorResult {
+  @JsonKey(name: 'message')
+  String get message => throw _privateConstructorUsedError;
+  @JsonKey(name: 'status')
+  String get status => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $ErrorResultCopyWith<ErrorResult> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $ErrorResultCopyWith<$Res> {
+  factory $ErrorResultCopyWith(
+          ErrorResult value, $Res Function(ErrorResult) then) =
+      _$ErrorResultCopyWithImpl<$Res>;
+  $Res call(
+      {@JsonKey(name: 'message') String message,
+      @JsonKey(name: 'status') String status});
+}
+
+/// @nodoc
+class _$ErrorResultCopyWithImpl<$Res> implements $ErrorResultCopyWith<$Res> {
+  _$ErrorResultCopyWithImpl(this._value, this._then);
+
+  final ErrorResult _value;
+  // ignore: unused_field
+  final $Res Function(ErrorResult) _then;
+
+  @override
+  $Res call({
+    Object? message = freezed,
+    Object? status = freezed,
+  }) {
+    return _then(_value.copyWith(
+      message: message == freezed
+          ? _value.message
+          : message // ignore: cast_nullable_to_non_nullable
+              as String,
+      status: status == freezed
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+abstract class _$ErrorResultCopyWith<$Res>
+    implements $ErrorResultCopyWith<$Res> {
+  factory _$ErrorResultCopyWith(
+          _ErrorResult value, $Res Function(_ErrorResult) then) =
+      __$ErrorResultCopyWithImpl<$Res>;
+  @override
+  $Res call(
+      {@JsonKey(name: 'message') String message,
+      @JsonKey(name: 'status') String status});
+}
+
+/// @nodoc
+class __$ErrorResultCopyWithImpl<$Res> extends _$ErrorResultCopyWithImpl<$Res>
+    implements _$ErrorResultCopyWith<$Res> {
+  __$ErrorResultCopyWithImpl(
+      _ErrorResult _value, $Res Function(_ErrorResult) _then)
+      : super(_value, (v) => _then(v as _ErrorResult));
+
+  @override
+  _ErrorResult get _value => super._value as _ErrorResult;
+
+  @override
+  $Res call({
+    Object? message = freezed,
+    Object? status = freezed,
+  }) {
+    return _then(_ErrorResult(
+      message: message == freezed
+          ? _value.message
+          : message // ignore: cast_nullable_to_non_nullable
+              as String,
+      status: status == freezed
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$_ErrorResult implements _ErrorResult {
+  _$_ErrorResult(
+      {@JsonKey(name: 'message') required this.message,
+      @JsonKey(name: 'status') required this.status});
+
+  factory _$_ErrorResult.fromJson(Map<String, dynamic> json) =>
+      _$_$_ErrorResultFromJson(json);
+
+  @override
+  @JsonKey(name: 'message')
+  final String message;
+  @override
+  @JsonKey(name: 'status')
+  final String status;
+
+  @override
+  String toString() {
+    return 'ErrorResult(message: $message, status: $status)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is _ErrorResult &&
+            (identical(other.message, message) ||
+                const DeepCollectionEquality()
+                    .equals(other.message, message)) &&
+            (identical(other.status, status) ||
+                const DeepCollectionEquality().equals(other.status, status)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(message) ^
+      const DeepCollectionEquality().hash(status);
+
+  @JsonKey(ignore: true)
+  @override
+  _$ErrorResultCopyWith<_ErrorResult> get copyWith =>
+      __$ErrorResultCopyWithImpl<_ErrorResult>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$_$_ErrorResultToJson(this);
+  }
+}
+
+abstract class _ErrorResult implements ErrorResult {
+  factory _ErrorResult(
+      {@JsonKey(name: 'message') required String message,
+      @JsonKey(name: 'status') required String status}) = _$_ErrorResult;
+
+  factory _ErrorResult.fromJson(Map<String, dynamic> json) =
+      _$_ErrorResult.fromJson;
+
+  @override
+  @JsonKey(name: 'message')
+  String get message => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(name: 'status')
+  String get status => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(ignore: true)
+  _$ErrorResultCopyWith<_ErrorResult> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
 User _$UserFromJson(Map<String, dynamic> json) {
   return _User.fromJson(json);
 }
@@ -21,10 +205,12 @@ class _$UserTearOff {
   const _$UserTearOff();
 
   _User call(
-      {required String name,
+      {required String id,
+      required String name,
       required List<String> communityIds,
       String? avatarUrl}) {
     return _User(
+      id: id,
       name: name,
       communityIds: communityIds,
       avatarUrl: avatarUrl,
@@ -41,6 +227,7 @@ const $User = _$UserTearOff();
 
 /// @nodoc
 mixin _$User {
+  String get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   List<String> get communityIds => throw _privateConstructorUsedError;
   String? get avatarUrl => throw _privateConstructorUsedError;
@@ -54,7 +241,8 @@ mixin _$User {
 abstract class $UserCopyWith<$Res> {
   factory $UserCopyWith(User value, $Res Function(User) then) =
       _$UserCopyWithImpl<$Res>;
-  $Res call({String name, List<String> communityIds, String? avatarUrl});
+  $Res call(
+      {String id, String name, List<String> communityIds, String? avatarUrl});
 }
 
 /// @nodoc
@@ -67,11 +255,16 @@ class _$UserCopyWithImpl<$Res> implements $UserCopyWith<$Res> {
 
   @override
   $Res call({
+    Object? id = freezed,
     Object? name = freezed,
     Object? communityIds = freezed,
     Object? avatarUrl = freezed,
   }) {
     return _then(_value.copyWith(
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
       name: name == freezed
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -93,7 +286,8 @@ abstract class _$UserCopyWith<$Res> implements $UserCopyWith<$Res> {
   factory _$UserCopyWith(_User value, $Res Function(_User) then) =
       __$UserCopyWithImpl<$Res>;
   @override
-  $Res call({String name, List<String> communityIds, String? avatarUrl});
+  $Res call(
+      {String id, String name, List<String> communityIds, String? avatarUrl});
 }
 
 /// @nodoc
@@ -107,11 +301,16 @@ class __$UserCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res>
 
   @override
   $Res call({
+    Object? id = freezed,
     Object? name = freezed,
     Object? communityIds = freezed,
     Object? avatarUrl = freezed,
   }) {
     return _then(_User(
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
       name: name == freezed
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -131,11 +330,17 @@ class __$UserCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$_User implements _User {
-  _$_User({required this.name, required this.communityIds, this.avatarUrl});
+  _$_User(
+      {required this.id,
+      required this.name,
+      required this.communityIds,
+      this.avatarUrl});
 
   factory _$_User.fromJson(Map<String, dynamic> json) =>
       _$_$_UserFromJson(json);
 
+  @override
+  final String id;
   @override
   final String name;
   @override
@@ -145,13 +350,15 @@ class _$_User implements _User {
 
   @override
   String toString() {
-    return 'User(name: $name, communityIds: $communityIds, avatarUrl: $avatarUrl)';
+    return 'User(id: $id, name: $name, communityIds: $communityIds, avatarUrl: $avatarUrl)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other is _User &&
+            (identical(other.id, id) ||
+                const DeepCollectionEquality().equals(other.id, id)) &&
             (identical(other.name, name) ||
                 const DeepCollectionEquality().equals(other.name, name)) &&
             (identical(other.communityIds, communityIds) ||
@@ -165,6 +372,7 @@ class _$_User implements _User {
   @override
   int get hashCode =>
       runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(id) ^
       const DeepCollectionEquality().hash(name) ^
       const DeepCollectionEquality().hash(communityIds) ^
       const DeepCollectionEquality().hash(avatarUrl);
@@ -182,12 +390,15 @@ class _$_User implements _User {
 
 abstract class _User implements User {
   factory _User(
-      {required String name,
+      {required String id,
+      required String name,
       required List<String> communityIds,
       String? avatarUrl}) = _$_User;
 
   factory _User.fromJson(Map<String, dynamic> json) = _$_User.fromJson;
 
+  @override
+  String get id => throw _privateConstructorUsedError;
   @override
   String get name => throw _privateConstructorUsedError;
   @override
@@ -199,6 +410,468 @@ abstract class _User implements User {
   _$UserCopyWith<_User> get copyWith => throw _privateConstructorUsedError;
 }
 
+UsersUnion _$UsersUnionFromJson(Map<String, dynamic> json) {
+  switch (json['runtimeType'] as String) {
+    case 'default':
+      return Users.fromJson(json);
+    case 'error':
+      return UsersError.fromJson(json);
+    case 'loading':
+      return UsersLoading.fromJson(json);
+
+    default:
+      throw FallThroughError();
+  }
+}
+
+/// @nodoc
+class _$UsersUnionTearOff {
+  const _$UsersUnionTearOff();
+
+  Users call({@JsonKey(name: 'users') required List<User> users}) {
+    return Users(
+      users: users,
+    );
+  }
+
+  UsersError error(ErrorResult error) {
+    return UsersError(
+      error,
+    );
+  }
+
+  UsersLoading loading() {
+    return UsersLoading();
+  }
+
+  UsersUnion fromJson(Map<String, Object> json) {
+    return UsersUnion.fromJson(json);
+  }
+}
+
+/// @nodoc
+const $UsersUnion = _$UsersUnionTearOff();
+
+/// @nodoc
+mixin _$UsersUnion {
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>(
+    TResult Function(@JsonKey(name: 'users') List<User> users) $default, {
+    required TResult Function(ErrorResult error) error,
+    required TResult Function() loading,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(@JsonKey(name: 'users') List<User> users)? $default, {
+    TResult Function(ErrorResult error)? error,
+    TResult Function()? loading,
+    required TResult orElse(),
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>(
+    TResult Function(Users value) $default, {
+    required TResult Function(UsersError value) error,
+    required TResult Function(UsersLoading value) loading,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(Users value)? $default, {
+    TResult Function(UsersError value)? error,
+    TResult Function(UsersLoading value)? loading,
+    required TResult orElse(),
+  }) =>
+      throw _privateConstructorUsedError;
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $UsersUnionCopyWith<$Res> {
+  factory $UsersUnionCopyWith(
+          UsersUnion value, $Res Function(UsersUnion) then) =
+      _$UsersUnionCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class _$UsersUnionCopyWithImpl<$Res> implements $UsersUnionCopyWith<$Res> {
+  _$UsersUnionCopyWithImpl(this._value, this._then);
+
+  final UsersUnion _value;
+  // ignore: unused_field
+  final $Res Function(UsersUnion) _then;
+}
+
+/// @nodoc
+abstract class $UsersCopyWith<$Res> {
+  factory $UsersCopyWith(Users value, $Res Function(Users) then) =
+      _$UsersCopyWithImpl<$Res>;
+  $Res call({@JsonKey(name: 'users') List<User> users});
+}
+
+/// @nodoc
+class _$UsersCopyWithImpl<$Res> extends _$UsersUnionCopyWithImpl<$Res>
+    implements $UsersCopyWith<$Res> {
+  _$UsersCopyWithImpl(Users _value, $Res Function(Users) _then)
+      : super(_value, (v) => _then(v as Users));
+
+  @override
+  Users get _value => super._value as Users;
+
+  @override
+  $Res call({
+    Object? users = freezed,
+  }) {
+    return _then(Users(
+      users: users == freezed
+          ? _value.users
+          : users // ignore: cast_nullable_to_non_nullable
+              as List<User>,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$Users extends Users {
+  _$Users({@JsonKey(name: 'users') required this.users}) : super._();
+
+  factory _$Users.fromJson(Map<String, dynamic> json) =>
+      _$_$UsersFromJson(json);
+
+  @override
+  @JsonKey(name: 'users')
+  final List<User> users;
+
+  @override
+  String toString() {
+    return 'UsersUnion(users: $users)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is Users &&
+            (identical(other.users, users) ||
+                const DeepCollectionEquality().equals(other.users, users)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^ const DeepCollectionEquality().hash(users);
+
+  @JsonKey(ignore: true)
+  @override
+  $UsersCopyWith<Users> get copyWith =>
+      _$UsersCopyWithImpl<Users>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>(
+    TResult Function(@JsonKey(name: 'users') List<User> users) $default, {
+    required TResult Function(ErrorResult error) error,
+    required TResult Function() loading,
+  }) {
+    return $default(users);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(@JsonKey(name: 'users') List<User> users)? $default, {
+    TResult Function(ErrorResult error)? error,
+    TResult Function()? loading,
+    required TResult orElse(),
+  }) {
+    if ($default != null) {
+      return $default(users);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>(
+    TResult Function(Users value) $default, {
+    required TResult Function(UsersError value) error,
+    required TResult Function(UsersLoading value) loading,
+  }) {
+    return $default(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(Users value)? $default, {
+    TResult Function(UsersError value)? error,
+    TResult Function(UsersLoading value)? loading,
+    required TResult orElse(),
+  }) {
+    if ($default != null) {
+      return $default(this);
+    }
+    return orElse();
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$_$UsersToJson(this)..['runtimeType'] = 'default';
+  }
+}
+
+abstract class Users extends UsersUnion {
+  factory Users({@JsonKey(name: 'users') required List<User> users}) = _$Users;
+  Users._() : super._();
+
+  factory Users.fromJson(Map<String, dynamic> json) = _$Users.fromJson;
+
+  @JsonKey(name: 'users')
+  List<User> get users => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $UsersCopyWith<Users> get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $UsersErrorCopyWith<$Res> {
+  factory $UsersErrorCopyWith(
+          UsersError value, $Res Function(UsersError) then) =
+      _$UsersErrorCopyWithImpl<$Res>;
+  $Res call({ErrorResult error});
+
+  $ErrorResultCopyWith<$Res> get error;
+}
+
+/// @nodoc
+class _$UsersErrorCopyWithImpl<$Res> extends _$UsersUnionCopyWithImpl<$Res>
+    implements $UsersErrorCopyWith<$Res> {
+  _$UsersErrorCopyWithImpl(UsersError _value, $Res Function(UsersError) _then)
+      : super(_value, (v) => _then(v as UsersError));
+
+  @override
+  UsersError get _value => super._value as UsersError;
+
+  @override
+  $Res call({
+    Object? error = freezed,
+  }) {
+    return _then(UsersError(
+      error == freezed
+          ? _value.error
+          : error // ignore: cast_nullable_to_non_nullable
+              as ErrorResult,
+    ));
+  }
+
+  @override
+  $ErrorResultCopyWith<$Res> get error {
+    return $ErrorResultCopyWith<$Res>(_value.error, (value) {
+      return _then(_value.copyWith(error: value));
+    });
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$UsersError extends UsersError {
+  _$UsersError(this.error) : super._();
+
+  factory _$UsersError.fromJson(Map<String, dynamic> json) =>
+      _$_$UsersErrorFromJson(json);
+
+  @override
+  final ErrorResult error;
+
+  @override
+  String toString() {
+    return 'UsersUnion.error(error: $error)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is UsersError &&
+            (identical(other.error, error) ||
+                const DeepCollectionEquality().equals(other.error, error)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^ const DeepCollectionEquality().hash(error);
+
+  @JsonKey(ignore: true)
+  @override
+  $UsersErrorCopyWith<UsersError> get copyWith =>
+      _$UsersErrorCopyWithImpl<UsersError>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>(
+    TResult Function(@JsonKey(name: 'users') List<User> users) $default, {
+    required TResult Function(ErrorResult error) error,
+    required TResult Function() loading,
+  }) {
+    return error(this.error);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(@JsonKey(name: 'users') List<User> users)? $default, {
+    TResult Function(ErrorResult error)? error,
+    TResult Function()? loading,
+    required TResult orElse(),
+  }) {
+    if (error != null) {
+      return error(this.error);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>(
+    TResult Function(Users value) $default, {
+    required TResult Function(UsersError value) error,
+    required TResult Function(UsersLoading value) loading,
+  }) {
+    return error(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(Users value)? $default, {
+    TResult Function(UsersError value)? error,
+    TResult Function(UsersLoading value)? loading,
+    required TResult orElse(),
+  }) {
+    if (error != null) {
+      return error(this);
+    }
+    return orElse();
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$_$UsersErrorToJson(this)..['runtimeType'] = 'error';
+  }
+}
+
+abstract class UsersError extends UsersUnion {
+  factory UsersError(ErrorResult error) = _$UsersError;
+  UsersError._() : super._();
+
+  factory UsersError.fromJson(Map<String, dynamic> json) =
+      _$UsersError.fromJson;
+
+  ErrorResult get error => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $UsersErrorCopyWith<UsersError> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $UsersLoadingCopyWith<$Res> {
+  factory $UsersLoadingCopyWith(
+          UsersLoading value, $Res Function(UsersLoading) then) =
+      _$UsersLoadingCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class _$UsersLoadingCopyWithImpl<$Res> extends _$UsersUnionCopyWithImpl<$Res>
+    implements $UsersLoadingCopyWith<$Res> {
+  _$UsersLoadingCopyWithImpl(
+      UsersLoading _value, $Res Function(UsersLoading) _then)
+      : super(_value, (v) => _then(v as UsersLoading));
+
+  @override
+  UsersLoading get _value => super._value as UsersLoading;
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$UsersLoading extends UsersLoading {
+  _$UsersLoading() : super._();
+
+  factory _$UsersLoading.fromJson(Map<String, dynamic> json) =>
+      _$_$UsersLoadingFromJson(json);
+
+  @override
+  String toString() {
+    return 'UsersUnion.loading()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) || (other is UsersLoading);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>(
+    TResult Function(@JsonKey(name: 'users') List<User> users) $default, {
+    required TResult Function(ErrorResult error) error,
+    required TResult Function() loading,
+  }) {
+    return loading();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(@JsonKey(name: 'users') List<User> users)? $default, {
+    TResult Function(ErrorResult error)? error,
+    TResult Function()? loading,
+    required TResult orElse(),
+  }) {
+    if (loading != null) {
+      return loading();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>(
+    TResult Function(Users value) $default, {
+    required TResult Function(UsersError value) error,
+    required TResult Function(UsersLoading value) loading,
+  }) {
+    return loading(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(Users value)? $default, {
+    TResult Function(UsersError value)? error,
+    TResult Function(UsersLoading value)? loading,
+    required TResult orElse(),
+  }) {
+    if (loading != null) {
+      return loading(this);
+    }
+    return orElse();
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$_$UsersLoadingToJson(this)..['runtimeType'] = 'loading';
+  }
+}
+
+abstract class UsersLoading extends UsersUnion {
+  factory UsersLoading() = _$UsersLoading;
+  UsersLoading._() : super._();
+
+  factory UsersLoading.fromJson(Map<String, dynamic> json) =
+      _$UsersLoading.fromJson;
+}
+
 Community _$CommunityFromJson(Map<String, dynamic> json) {
   return _Community.fromJson(json);
 }
@@ -207,9 +880,19 @@ Community _$CommunityFromJson(Map<String, dynamic> json) {
 class _$CommunityTearOff {
   const _$CommunityTearOff();
 
-  _Community call({required String name, String? backgroundUrl}) {
+  _Community call(
+      {required String id,
+      required String name,
+      required String label,
+      required String invitation_code,
+      required String magic_word,
+      String? backgroundUrl}) {
     return _Community(
+      id: id,
       name: name,
+      label: label,
+      invitation_code: invitation_code,
+      magic_word: magic_word,
       backgroundUrl: backgroundUrl,
     );
   }
@@ -224,7 +907,11 @@ const $Community = _$CommunityTearOff();
 
 /// @nodoc
 mixin _$Community {
+  String get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
+  String get label => throw _privateConstructorUsedError;
+  String get invitation_code => throw _privateConstructorUsedError;
+  String get magic_word => throw _privateConstructorUsedError;
   String? get backgroundUrl => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -237,7 +924,13 @@ mixin _$Community {
 abstract class $CommunityCopyWith<$Res> {
   factory $CommunityCopyWith(Community value, $Res Function(Community) then) =
       _$CommunityCopyWithImpl<$Res>;
-  $Res call({String name, String? backgroundUrl});
+  $Res call(
+      {String id,
+      String name,
+      String label,
+      String invitation_code,
+      String magic_word,
+      String? backgroundUrl});
 }
 
 /// @nodoc
@@ -250,13 +943,33 @@ class _$CommunityCopyWithImpl<$Res> implements $CommunityCopyWith<$Res> {
 
   @override
   $Res call({
+    Object? id = freezed,
     Object? name = freezed,
+    Object? label = freezed,
+    Object? invitation_code = freezed,
+    Object? magic_word = freezed,
     Object? backgroundUrl = freezed,
   }) {
     return _then(_value.copyWith(
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
       name: name == freezed
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      label: label == freezed
+          ? _value.label
+          : label // ignore: cast_nullable_to_non_nullable
+              as String,
+      invitation_code: invitation_code == freezed
+          ? _value.invitation_code
+          : invitation_code // ignore: cast_nullable_to_non_nullable
+              as String,
+      magic_word: magic_word == freezed
+          ? _value.magic_word
+          : magic_word // ignore: cast_nullable_to_non_nullable
               as String,
       backgroundUrl: backgroundUrl == freezed
           ? _value.backgroundUrl
@@ -272,7 +985,13 @@ abstract class _$CommunityCopyWith<$Res> implements $CommunityCopyWith<$Res> {
           _Community value, $Res Function(_Community) then) =
       __$CommunityCopyWithImpl<$Res>;
   @override
-  $Res call({String name, String? backgroundUrl});
+  $Res call(
+      {String id,
+      String name,
+      String label,
+      String invitation_code,
+      String magic_word,
+      String? backgroundUrl});
 }
 
 /// @nodoc
@@ -286,13 +1005,33 @@ class __$CommunityCopyWithImpl<$Res> extends _$CommunityCopyWithImpl<$Res>
 
   @override
   $Res call({
+    Object? id = freezed,
     Object? name = freezed,
+    Object? label = freezed,
+    Object? invitation_code = freezed,
+    Object? magic_word = freezed,
     Object? backgroundUrl = freezed,
   }) {
     return _then(_Community(
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
       name: name == freezed
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      label: label == freezed
+          ? _value.label
+          : label // ignore: cast_nullable_to_non_nullable
+              as String,
+      invitation_code: invitation_code == freezed
+          ? _value.invitation_code
+          : invitation_code // ignore: cast_nullable_to_non_nullable
+              as String,
+      magic_word: magic_word == freezed
+          ? _value.magic_word
+          : magic_word // ignore: cast_nullable_to_non_nullable
               as String,
       backgroundUrl: backgroundUrl == freezed
           ? _value.backgroundUrl
@@ -305,27 +1044,51 @@ class __$CommunityCopyWithImpl<$Res> extends _$CommunityCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$_Community implements _Community {
-  _$_Community({required this.name, this.backgroundUrl});
+  _$_Community(
+      {required this.id,
+      required this.name,
+      required this.label,
+      required this.invitation_code,
+      required this.magic_word,
+      this.backgroundUrl});
 
   factory _$_Community.fromJson(Map<String, dynamic> json) =>
       _$_$_CommunityFromJson(json);
 
   @override
+  final String id;
+  @override
   final String name;
+  @override
+  final String label;
+  @override
+  final String invitation_code;
+  @override
+  final String magic_word;
   @override
   final String? backgroundUrl;
 
   @override
   String toString() {
-    return 'Community(name: $name, backgroundUrl: $backgroundUrl)';
+    return 'Community(id: $id, name: $name, label: $label, invitation_code: $invitation_code, magic_word: $magic_word, backgroundUrl: $backgroundUrl)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other is _Community &&
+            (identical(other.id, id) ||
+                const DeepCollectionEquality().equals(other.id, id)) &&
             (identical(other.name, name) ||
                 const DeepCollectionEquality().equals(other.name, name)) &&
+            (identical(other.label, label) ||
+                const DeepCollectionEquality().equals(other.label, label)) &&
+            (identical(other.invitation_code, invitation_code) ||
+                const DeepCollectionEquality()
+                    .equals(other.invitation_code, invitation_code)) &&
+            (identical(other.magic_word, magic_word) ||
+                const DeepCollectionEquality()
+                    .equals(other.magic_word, magic_word)) &&
             (identical(other.backgroundUrl, backgroundUrl) ||
                 const DeepCollectionEquality()
                     .equals(other.backgroundUrl, backgroundUrl)));
@@ -334,7 +1097,11 @@ class _$_Community implements _Community {
   @override
   int get hashCode =>
       runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(id) ^
       const DeepCollectionEquality().hash(name) ^
+      const DeepCollectionEquality().hash(label) ^
+      const DeepCollectionEquality().hash(invitation_code) ^
+      const DeepCollectionEquality().hash(magic_word) ^
       const DeepCollectionEquality().hash(backgroundUrl);
 
   @JsonKey(ignore: true)
@@ -349,20 +1116,521 @@ class _$_Community implements _Community {
 }
 
 abstract class _Community implements Community {
-  factory _Community({required String name, String? backgroundUrl}) =
-      _$_Community;
+  factory _Community(
+      {required String id,
+      required String name,
+      required String label,
+      required String invitation_code,
+      required String magic_word,
+      String? backgroundUrl}) = _$_Community;
 
   factory _Community.fromJson(Map<String, dynamic> json) =
       _$_Community.fromJson;
 
   @override
+  String get id => throw _privateConstructorUsedError;
+  @override
   String get name => throw _privateConstructorUsedError;
+  @override
+  String get label => throw _privateConstructorUsedError;
+  @override
+  String get invitation_code => throw _privateConstructorUsedError;
+  @override
+  String get magic_word => throw _privateConstructorUsedError;
   @override
   String? get backgroundUrl => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$CommunityCopyWith<_Community> get copyWith =>
       throw _privateConstructorUsedError;
+}
+
+CommunitiesUnion _$CommunitiesUnionFromJson(Map<String, dynamic> json) {
+  switch (json['runtimeType'] as String) {
+    case 'default':
+      return Communities.fromJson(json);
+    case 'error':
+      return CommunitiesError.fromJson(json);
+    case 'loading':
+      return CommunitiesLoading.fromJson(json);
+
+    default:
+      throw FallThroughError();
+  }
+}
+
+/// @nodoc
+class _$CommunitiesUnionTearOff {
+  const _$CommunitiesUnionTearOff();
+
+  Communities call(
+      {@JsonKey(name: 'communitiess') required List<Community> communities}) {
+    return Communities(
+      communities: communities,
+    );
+  }
+
+  CommunitiesError error(ErrorResult error) {
+    return CommunitiesError(
+      error,
+    );
+  }
+
+  CommunitiesLoading loading() {
+    return CommunitiesLoading();
+  }
+
+  CommunitiesUnion fromJson(Map<String, Object> json) {
+    return CommunitiesUnion.fromJson(json);
+  }
+}
+
+/// @nodoc
+const $CommunitiesUnion = _$CommunitiesUnionTearOff();
+
+/// @nodoc
+mixin _$CommunitiesUnion {
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>(
+    TResult Function(@JsonKey(name: 'communitiess') List<Community> communities)
+        $default, {
+    required TResult Function(ErrorResult error) error,
+    required TResult Function() loading,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(
+            @JsonKey(name: 'communitiess') List<Community> communities)?
+        $default, {
+    TResult Function(ErrorResult error)? error,
+    TResult Function()? loading,
+    required TResult orElse(),
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>(
+    TResult Function(Communities value) $default, {
+    required TResult Function(CommunitiesError value) error,
+    required TResult Function(CommunitiesLoading value) loading,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(Communities value)? $default, {
+    TResult Function(CommunitiesError value)? error,
+    TResult Function(CommunitiesLoading value)? loading,
+    required TResult orElse(),
+  }) =>
+      throw _privateConstructorUsedError;
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $CommunitiesUnionCopyWith<$Res> {
+  factory $CommunitiesUnionCopyWith(
+          CommunitiesUnion value, $Res Function(CommunitiesUnion) then) =
+      _$CommunitiesUnionCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class _$CommunitiesUnionCopyWithImpl<$Res>
+    implements $CommunitiesUnionCopyWith<$Res> {
+  _$CommunitiesUnionCopyWithImpl(this._value, this._then);
+
+  final CommunitiesUnion _value;
+  // ignore: unused_field
+  final $Res Function(CommunitiesUnion) _then;
+}
+
+/// @nodoc
+abstract class $CommunitiesCopyWith<$Res> {
+  factory $CommunitiesCopyWith(
+          Communities value, $Res Function(Communities) then) =
+      _$CommunitiesCopyWithImpl<$Res>;
+  $Res call({@JsonKey(name: 'communitiess') List<Community> communities});
+}
+
+/// @nodoc
+class _$CommunitiesCopyWithImpl<$Res>
+    extends _$CommunitiesUnionCopyWithImpl<$Res>
+    implements $CommunitiesCopyWith<$Res> {
+  _$CommunitiesCopyWithImpl(
+      Communities _value, $Res Function(Communities) _then)
+      : super(_value, (v) => _then(v as Communities));
+
+  @override
+  Communities get _value => super._value as Communities;
+
+  @override
+  $Res call({
+    Object? communities = freezed,
+  }) {
+    return _then(Communities(
+      communities: communities == freezed
+          ? _value.communities
+          : communities // ignore: cast_nullable_to_non_nullable
+              as List<Community>,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$Communities extends Communities {
+  _$Communities({@JsonKey(name: 'communitiess') required this.communities})
+      : super._();
+
+  factory _$Communities.fromJson(Map<String, dynamic> json) =>
+      _$_$CommunitiesFromJson(json);
+
+  @override
+  @JsonKey(name: 'communitiess')
+  final List<Community> communities;
+
+  @override
+  String toString() {
+    return 'CommunitiesUnion(communities: $communities)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is Communities &&
+            (identical(other.communities, communities) ||
+                const DeepCollectionEquality()
+                    .equals(other.communities, communities)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^ const DeepCollectionEquality().hash(communities);
+
+  @JsonKey(ignore: true)
+  @override
+  $CommunitiesCopyWith<Communities> get copyWith =>
+      _$CommunitiesCopyWithImpl<Communities>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>(
+    TResult Function(@JsonKey(name: 'communitiess') List<Community> communities)
+        $default, {
+    required TResult Function(ErrorResult error) error,
+    required TResult Function() loading,
+  }) {
+    return $default(communities);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(
+            @JsonKey(name: 'communitiess') List<Community> communities)?
+        $default, {
+    TResult Function(ErrorResult error)? error,
+    TResult Function()? loading,
+    required TResult orElse(),
+  }) {
+    if ($default != null) {
+      return $default(communities);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>(
+    TResult Function(Communities value) $default, {
+    required TResult Function(CommunitiesError value) error,
+    required TResult Function(CommunitiesLoading value) loading,
+  }) {
+    return $default(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(Communities value)? $default, {
+    TResult Function(CommunitiesError value)? error,
+    TResult Function(CommunitiesLoading value)? loading,
+    required TResult orElse(),
+  }) {
+    if ($default != null) {
+      return $default(this);
+    }
+    return orElse();
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$_$CommunitiesToJson(this)..['runtimeType'] = 'default';
+  }
+}
+
+abstract class Communities extends CommunitiesUnion {
+  factory Communities(
+      {@JsonKey(name: 'communitiess')
+          required List<Community> communities}) = _$Communities;
+  Communities._() : super._();
+
+  factory Communities.fromJson(Map<String, dynamic> json) =
+      _$Communities.fromJson;
+
+  @JsonKey(name: 'communitiess')
+  List<Community> get communities => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $CommunitiesCopyWith<Communities> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $CommunitiesErrorCopyWith<$Res> {
+  factory $CommunitiesErrorCopyWith(
+          CommunitiesError value, $Res Function(CommunitiesError) then) =
+      _$CommunitiesErrorCopyWithImpl<$Res>;
+  $Res call({ErrorResult error});
+
+  $ErrorResultCopyWith<$Res> get error;
+}
+
+/// @nodoc
+class _$CommunitiesErrorCopyWithImpl<$Res>
+    extends _$CommunitiesUnionCopyWithImpl<$Res>
+    implements $CommunitiesErrorCopyWith<$Res> {
+  _$CommunitiesErrorCopyWithImpl(
+      CommunitiesError _value, $Res Function(CommunitiesError) _then)
+      : super(_value, (v) => _then(v as CommunitiesError));
+
+  @override
+  CommunitiesError get _value => super._value as CommunitiesError;
+
+  @override
+  $Res call({
+    Object? error = freezed,
+  }) {
+    return _then(CommunitiesError(
+      error == freezed
+          ? _value.error
+          : error // ignore: cast_nullable_to_non_nullable
+              as ErrorResult,
+    ));
+  }
+
+  @override
+  $ErrorResultCopyWith<$Res> get error {
+    return $ErrorResultCopyWith<$Res>(_value.error, (value) {
+      return _then(_value.copyWith(error: value));
+    });
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$CommunitiesError extends CommunitiesError {
+  _$CommunitiesError(this.error) : super._();
+
+  factory _$CommunitiesError.fromJson(Map<String, dynamic> json) =>
+      _$_$CommunitiesErrorFromJson(json);
+
+  @override
+  final ErrorResult error;
+
+  @override
+  String toString() {
+    return 'CommunitiesUnion.error(error: $error)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is CommunitiesError &&
+            (identical(other.error, error) ||
+                const DeepCollectionEquality().equals(other.error, error)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^ const DeepCollectionEquality().hash(error);
+
+  @JsonKey(ignore: true)
+  @override
+  $CommunitiesErrorCopyWith<CommunitiesError> get copyWith =>
+      _$CommunitiesErrorCopyWithImpl<CommunitiesError>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>(
+    TResult Function(@JsonKey(name: 'communitiess') List<Community> communities)
+        $default, {
+    required TResult Function(ErrorResult error) error,
+    required TResult Function() loading,
+  }) {
+    return error(this.error);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(
+            @JsonKey(name: 'communitiess') List<Community> communities)?
+        $default, {
+    TResult Function(ErrorResult error)? error,
+    TResult Function()? loading,
+    required TResult orElse(),
+  }) {
+    if (error != null) {
+      return error(this.error);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>(
+    TResult Function(Communities value) $default, {
+    required TResult Function(CommunitiesError value) error,
+    required TResult Function(CommunitiesLoading value) loading,
+  }) {
+    return error(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(Communities value)? $default, {
+    TResult Function(CommunitiesError value)? error,
+    TResult Function(CommunitiesLoading value)? loading,
+    required TResult orElse(),
+  }) {
+    if (error != null) {
+      return error(this);
+    }
+    return orElse();
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$_$CommunitiesErrorToJson(this)..['runtimeType'] = 'error';
+  }
+}
+
+abstract class CommunitiesError extends CommunitiesUnion {
+  factory CommunitiesError(ErrorResult error) = _$CommunitiesError;
+  CommunitiesError._() : super._();
+
+  factory CommunitiesError.fromJson(Map<String, dynamic> json) =
+      _$CommunitiesError.fromJson;
+
+  ErrorResult get error => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $CommunitiesErrorCopyWith<CommunitiesError> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $CommunitiesLoadingCopyWith<$Res> {
+  factory $CommunitiesLoadingCopyWith(
+          CommunitiesLoading value, $Res Function(CommunitiesLoading) then) =
+      _$CommunitiesLoadingCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class _$CommunitiesLoadingCopyWithImpl<$Res>
+    extends _$CommunitiesUnionCopyWithImpl<$Res>
+    implements $CommunitiesLoadingCopyWith<$Res> {
+  _$CommunitiesLoadingCopyWithImpl(
+      CommunitiesLoading _value, $Res Function(CommunitiesLoading) _then)
+      : super(_value, (v) => _then(v as CommunitiesLoading));
+
+  @override
+  CommunitiesLoading get _value => super._value as CommunitiesLoading;
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$CommunitiesLoading extends CommunitiesLoading {
+  _$CommunitiesLoading() : super._();
+
+  factory _$CommunitiesLoading.fromJson(Map<String, dynamic> json) =>
+      _$_$CommunitiesLoadingFromJson(json);
+
+  @override
+  String toString() {
+    return 'CommunitiesUnion.loading()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) || (other is CommunitiesLoading);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>(
+    TResult Function(@JsonKey(name: 'communitiess') List<Community> communities)
+        $default, {
+    required TResult Function(ErrorResult error) error,
+    required TResult Function() loading,
+  }) {
+    return loading();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(
+            @JsonKey(name: 'communitiess') List<Community> communities)?
+        $default, {
+    TResult Function(ErrorResult error)? error,
+    TResult Function()? loading,
+    required TResult orElse(),
+  }) {
+    if (loading != null) {
+      return loading();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>(
+    TResult Function(Communities value) $default, {
+    required TResult Function(CommunitiesError value) error,
+    required TResult Function(CommunitiesLoading value) loading,
+  }) {
+    return loading(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(Communities value)? $default, {
+    TResult Function(CommunitiesError value)? error,
+    TResult Function(CommunitiesLoading value)? loading,
+    required TResult orElse(),
+  }) {
+    if (loading != null) {
+      return loading(this);
+    }
+    return orElse();
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$_$CommunitiesLoadingToJson(this)..['runtimeType'] = 'loading';
+  }
+}
+
+abstract class CommunitiesLoading extends CommunitiesUnion {
+  factory CommunitiesLoading() = _$CommunitiesLoading;
+  CommunitiesLoading._() : super._();
+
+  factory CommunitiesLoading.fromJson(Map<String, dynamic> json) =
+      _$CommunitiesLoading.fromJson;
 }
 
 Event _$EventFromJson(Map<String, dynamic> json) {
@@ -374,20 +1642,28 @@ class _$EventTearOff {
   const _$EventTearOff();
 
   _Event call(
-      {required String name,
+      {required String id,
+      required String name,
+      required EventStatus status,
       required String communityId,
       required EventCategory category,
       required String description,
       required String organizerId,
-      required List<String> participantIds,
+      required List<String> yesParticipantIds,
+      required List<String> maybeParticipantIds,
+      required List<String> noParticipantIds,
       String? backgroundUrl}) {
     return _Event(
+      id: id,
       name: name,
+      status: status,
       communityId: communityId,
       category: category,
       description: description,
       organizerId: organizerId,
-      participantIds: participantIds,
+      yesParticipantIds: yesParticipantIds,
+      maybeParticipantIds: maybeParticipantIds,
+      noParticipantIds: noParticipantIds,
       backgroundUrl: backgroundUrl,
     );
   }
@@ -402,12 +1678,16 @@ const $Event = _$EventTearOff();
 
 /// @nodoc
 mixin _$Event {
+  String get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
+  EventStatus get status => throw _privateConstructorUsedError;
   String get communityId => throw _privateConstructorUsedError;
   EventCategory get category => throw _privateConstructorUsedError;
   String get description => throw _privateConstructorUsedError;
   String get organizerId => throw _privateConstructorUsedError;
-  List<String> get participantIds => throw _privateConstructorUsedError;
+  List<String> get yesParticipantIds => throw _privateConstructorUsedError;
+  List<String> get maybeParticipantIds => throw _privateConstructorUsedError;
+  List<String> get noParticipantIds => throw _privateConstructorUsedError;
   String? get backgroundUrl => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -420,12 +1700,16 @@ abstract class $EventCopyWith<$Res> {
   factory $EventCopyWith(Event value, $Res Function(Event) then) =
       _$EventCopyWithImpl<$Res>;
   $Res call(
-      {String name,
+      {String id,
+      String name,
+      EventStatus status,
       String communityId,
       EventCategory category,
       String description,
       String organizerId,
-      List<String> participantIds,
+      List<String> yesParticipantIds,
+      List<String> maybeParticipantIds,
+      List<String> noParticipantIds,
       String? backgroundUrl});
 }
 
@@ -439,19 +1723,31 @@ class _$EventCopyWithImpl<$Res> implements $EventCopyWith<$Res> {
 
   @override
   $Res call({
+    Object? id = freezed,
     Object? name = freezed,
+    Object? status = freezed,
     Object? communityId = freezed,
     Object? category = freezed,
     Object? description = freezed,
     Object? organizerId = freezed,
-    Object? participantIds = freezed,
+    Object? yesParticipantIds = freezed,
+    Object? maybeParticipantIds = freezed,
+    Object? noParticipantIds = freezed,
     Object? backgroundUrl = freezed,
   }) {
     return _then(_value.copyWith(
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
       name: name == freezed
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
+      status: status == freezed
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as EventStatus,
       communityId: communityId == freezed
           ? _value.communityId
           : communityId // ignore: cast_nullable_to_non_nullable
@@ -468,9 +1764,17 @@ class _$EventCopyWithImpl<$Res> implements $EventCopyWith<$Res> {
           ? _value.organizerId
           : organizerId // ignore: cast_nullable_to_non_nullable
               as String,
-      participantIds: participantIds == freezed
-          ? _value.participantIds
-          : participantIds // ignore: cast_nullable_to_non_nullable
+      yesParticipantIds: yesParticipantIds == freezed
+          ? _value.yesParticipantIds
+          : yesParticipantIds // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      maybeParticipantIds: maybeParticipantIds == freezed
+          ? _value.maybeParticipantIds
+          : maybeParticipantIds // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      noParticipantIds: noParticipantIds == freezed
+          ? _value.noParticipantIds
+          : noParticipantIds // ignore: cast_nullable_to_non_nullable
               as List<String>,
       backgroundUrl: backgroundUrl == freezed
           ? _value.backgroundUrl
@@ -486,12 +1790,16 @@ abstract class _$EventCopyWith<$Res> implements $EventCopyWith<$Res> {
       __$EventCopyWithImpl<$Res>;
   @override
   $Res call(
-      {String name,
+      {String id,
+      String name,
+      EventStatus status,
       String communityId,
       EventCategory category,
       String description,
       String organizerId,
-      List<String> participantIds,
+      List<String> yesParticipantIds,
+      List<String> maybeParticipantIds,
+      List<String> noParticipantIds,
       String? backgroundUrl});
 }
 
@@ -506,19 +1814,31 @@ class __$EventCopyWithImpl<$Res> extends _$EventCopyWithImpl<$Res>
 
   @override
   $Res call({
+    Object? id = freezed,
     Object? name = freezed,
+    Object? status = freezed,
     Object? communityId = freezed,
     Object? category = freezed,
     Object? description = freezed,
     Object? organizerId = freezed,
-    Object? participantIds = freezed,
+    Object? yesParticipantIds = freezed,
+    Object? maybeParticipantIds = freezed,
+    Object? noParticipantIds = freezed,
     Object? backgroundUrl = freezed,
   }) {
     return _then(_Event(
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
       name: name == freezed
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
+      status: status == freezed
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as EventStatus,
       communityId: communityId == freezed
           ? _value.communityId
           : communityId // ignore: cast_nullable_to_non_nullable
@@ -535,9 +1855,17 @@ class __$EventCopyWithImpl<$Res> extends _$EventCopyWithImpl<$Res>
           ? _value.organizerId
           : organizerId // ignore: cast_nullable_to_non_nullable
               as String,
-      participantIds: participantIds == freezed
-          ? _value.participantIds
-          : participantIds // ignore: cast_nullable_to_non_nullable
+      yesParticipantIds: yesParticipantIds == freezed
+          ? _value.yesParticipantIds
+          : yesParticipantIds // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      maybeParticipantIds: maybeParticipantIds == freezed
+          ? _value.maybeParticipantIds
+          : maybeParticipantIds // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      noParticipantIds: noParticipantIds == freezed
+          ? _value.noParticipantIds
+          : noParticipantIds // ignore: cast_nullable_to_non_nullable
               as List<String>,
       backgroundUrl: backgroundUrl == freezed
           ? _value.backgroundUrl
@@ -549,21 +1877,30 @@ class __$EventCopyWithImpl<$Res> extends _$EventCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_Event implements _Event {
+class _$_Event extends _Event {
   _$_Event(
-      {required this.name,
+      {required this.id,
+      required this.name,
+      required this.status,
       required this.communityId,
       required this.category,
       required this.description,
       required this.organizerId,
-      required this.participantIds,
-      this.backgroundUrl});
+      required this.yesParticipantIds,
+      required this.maybeParticipantIds,
+      required this.noParticipantIds,
+      this.backgroundUrl})
+      : super._();
 
   factory _$_Event.fromJson(Map<String, dynamic> json) =>
       _$_$_EventFromJson(json);
 
   @override
+  final String id;
+  @override
   final String name;
+  @override
+  final EventStatus status;
   @override
   final String communityId;
   @override
@@ -573,21 +1910,29 @@ class _$_Event implements _Event {
   @override
   final String organizerId;
   @override
-  final List<String> participantIds;
+  final List<String> yesParticipantIds;
+  @override
+  final List<String> maybeParticipantIds;
+  @override
+  final List<String> noParticipantIds;
   @override
   final String? backgroundUrl;
 
   @override
   String toString() {
-    return 'Event(name: $name, communityId: $communityId, category: $category, description: $description, organizerId: $organizerId, participantIds: $participantIds, backgroundUrl: $backgroundUrl)';
+    return 'Event(id: $id, name: $name, status: $status, communityId: $communityId, category: $category, description: $description, organizerId: $organizerId, yesParticipantIds: $yesParticipantIds, maybeParticipantIds: $maybeParticipantIds, noParticipantIds: $noParticipantIds, backgroundUrl: $backgroundUrl)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other is _Event &&
+            (identical(other.id, id) ||
+                const DeepCollectionEquality().equals(other.id, id)) &&
             (identical(other.name, name) ||
                 const DeepCollectionEquality().equals(other.name, name)) &&
+            (identical(other.status, status) ||
+                const DeepCollectionEquality().equals(other.status, status)) &&
             (identical(other.communityId, communityId) ||
                 const DeepCollectionEquality()
                     .equals(other.communityId, communityId)) &&
@@ -600,9 +1945,15 @@ class _$_Event implements _Event {
             (identical(other.organizerId, organizerId) ||
                 const DeepCollectionEquality()
                     .equals(other.organizerId, organizerId)) &&
-            (identical(other.participantIds, participantIds) ||
+            (identical(other.yesParticipantIds, yesParticipantIds) ||
                 const DeepCollectionEquality()
-                    .equals(other.participantIds, participantIds)) &&
+                    .equals(other.yesParticipantIds, yesParticipantIds)) &&
+            (identical(other.maybeParticipantIds, maybeParticipantIds) ||
+                const DeepCollectionEquality()
+                    .equals(other.maybeParticipantIds, maybeParticipantIds)) &&
+            (identical(other.noParticipantIds, noParticipantIds) ||
+                const DeepCollectionEquality()
+                    .equals(other.noParticipantIds, noParticipantIds)) &&
             (identical(other.backgroundUrl, backgroundUrl) ||
                 const DeepCollectionEquality()
                     .equals(other.backgroundUrl, backgroundUrl)));
@@ -611,12 +1962,16 @@ class _$_Event implements _Event {
   @override
   int get hashCode =>
       runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(id) ^
       const DeepCollectionEquality().hash(name) ^
+      const DeepCollectionEquality().hash(status) ^
       const DeepCollectionEquality().hash(communityId) ^
       const DeepCollectionEquality().hash(category) ^
       const DeepCollectionEquality().hash(description) ^
       const DeepCollectionEquality().hash(organizerId) ^
-      const DeepCollectionEquality().hash(participantIds) ^
+      const DeepCollectionEquality().hash(yesParticipantIds) ^
+      const DeepCollectionEquality().hash(maybeParticipantIds) ^
+      const DeepCollectionEquality().hash(noParticipantIds) ^
       const DeepCollectionEquality().hash(backgroundUrl);
 
   @JsonKey(ignore: true)
@@ -630,20 +1985,29 @@ class _$_Event implements _Event {
   }
 }
 
-abstract class _Event implements Event {
+abstract class _Event extends Event {
   factory _Event(
-      {required String name,
+      {required String id,
+      required String name,
+      required EventStatus status,
       required String communityId,
       required EventCategory category,
       required String description,
       required String organizerId,
-      required List<String> participantIds,
+      required List<String> yesParticipantIds,
+      required List<String> maybeParticipantIds,
+      required List<String> noParticipantIds,
       String? backgroundUrl}) = _$_Event;
+  _Event._() : super._();
 
   factory _Event.fromJson(Map<String, dynamic> json) = _$_Event.fromJson;
 
   @override
+  String get id => throw _privateConstructorUsedError;
+  @override
   String get name => throw _privateConstructorUsedError;
+  @override
+  EventStatus get status => throw _privateConstructorUsedError;
   @override
   String get communityId => throw _privateConstructorUsedError;
   @override
@@ -653,12 +2017,480 @@ abstract class _Event implements Event {
   @override
   String get organizerId => throw _privateConstructorUsedError;
   @override
-  List<String> get participantIds => throw _privateConstructorUsedError;
+  List<String> get yesParticipantIds => throw _privateConstructorUsedError;
+  @override
+  List<String> get maybeParticipantIds => throw _privateConstructorUsedError;
+  @override
+  List<String> get noParticipantIds => throw _privateConstructorUsedError;
   @override
   String? get backgroundUrl => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$EventCopyWith<_Event> get copyWith => throw _privateConstructorUsedError;
+}
+
+EventsUnion _$EventsUnionFromJson(Map<String, dynamic> json) {
+  switch (json['runtimeType'] as String) {
+    case 'default':
+      return Events.fromJson(json);
+    case 'error':
+      return EventsError.fromJson(json);
+    case 'loading':
+      return EventsLoading.fromJson(json);
+
+    default:
+      throw FallThroughError();
+  }
+}
+
+/// @nodoc
+class _$EventsUnionTearOff {
+  const _$EventsUnionTearOff();
+
+  Events call({@JsonKey(name: 'events') required List<Event> events}) {
+    return Events(
+      events: events,
+    );
+  }
+
+  EventsError error(ErrorResult error) {
+    return EventsError(
+      error,
+    );
+  }
+
+  EventsLoading loading() {
+    return EventsLoading();
+  }
+
+  EventsUnion fromJson(Map<String, Object> json) {
+    return EventsUnion.fromJson(json);
+  }
+}
+
+/// @nodoc
+const $EventsUnion = _$EventsUnionTearOff();
+
+/// @nodoc
+mixin _$EventsUnion {
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>(
+    TResult Function(@JsonKey(name: 'events') List<Event> events) $default, {
+    required TResult Function(ErrorResult error) error,
+    required TResult Function() loading,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(@JsonKey(name: 'events') List<Event> events)? $default, {
+    TResult Function(ErrorResult error)? error,
+    TResult Function()? loading,
+    required TResult orElse(),
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>(
+    TResult Function(Events value) $default, {
+    required TResult Function(EventsError value) error,
+    required TResult Function(EventsLoading value) loading,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(Events value)? $default, {
+    TResult Function(EventsError value)? error,
+    TResult Function(EventsLoading value)? loading,
+    required TResult orElse(),
+  }) =>
+      throw _privateConstructorUsedError;
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $EventsUnionCopyWith<$Res> {
+  factory $EventsUnionCopyWith(
+          EventsUnion value, $Res Function(EventsUnion) then) =
+      _$EventsUnionCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class _$EventsUnionCopyWithImpl<$Res> implements $EventsUnionCopyWith<$Res> {
+  _$EventsUnionCopyWithImpl(this._value, this._then);
+
+  final EventsUnion _value;
+  // ignore: unused_field
+  final $Res Function(EventsUnion) _then;
+}
+
+/// @nodoc
+abstract class $EventsCopyWith<$Res> {
+  factory $EventsCopyWith(Events value, $Res Function(Events) then) =
+      _$EventsCopyWithImpl<$Res>;
+  $Res call({@JsonKey(name: 'events') List<Event> events});
+}
+
+/// @nodoc
+class _$EventsCopyWithImpl<$Res> extends _$EventsUnionCopyWithImpl<$Res>
+    implements $EventsCopyWith<$Res> {
+  _$EventsCopyWithImpl(Events _value, $Res Function(Events) _then)
+      : super(_value, (v) => _then(v as Events));
+
+  @override
+  Events get _value => super._value as Events;
+
+  @override
+  $Res call({
+    Object? events = freezed,
+  }) {
+    return _then(Events(
+      events: events == freezed
+          ? _value.events
+          : events // ignore: cast_nullable_to_non_nullable
+              as List<Event>,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$Events extends Events {
+  _$Events({@JsonKey(name: 'events') required this.events}) : super._();
+
+  factory _$Events.fromJson(Map<String, dynamic> json) =>
+      _$_$EventsFromJson(json);
+
+  @override
+  @JsonKey(name: 'events')
+  final List<Event> events;
+
+  @override
+  String toString() {
+    return 'EventsUnion(events: $events)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is Events &&
+            (identical(other.events, events) ||
+                const DeepCollectionEquality().equals(other.events, events)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^ const DeepCollectionEquality().hash(events);
+
+  @JsonKey(ignore: true)
+  @override
+  $EventsCopyWith<Events> get copyWith =>
+      _$EventsCopyWithImpl<Events>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>(
+    TResult Function(@JsonKey(name: 'events') List<Event> events) $default, {
+    required TResult Function(ErrorResult error) error,
+    required TResult Function() loading,
+  }) {
+    return $default(events);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(@JsonKey(name: 'events') List<Event> events)? $default, {
+    TResult Function(ErrorResult error)? error,
+    TResult Function()? loading,
+    required TResult orElse(),
+  }) {
+    if ($default != null) {
+      return $default(events);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>(
+    TResult Function(Events value) $default, {
+    required TResult Function(EventsError value) error,
+    required TResult Function(EventsLoading value) loading,
+  }) {
+    return $default(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(Events value)? $default, {
+    TResult Function(EventsError value)? error,
+    TResult Function(EventsLoading value)? loading,
+    required TResult orElse(),
+  }) {
+    if ($default != null) {
+      return $default(this);
+    }
+    return orElse();
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$_$EventsToJson(this)..['runtimeType'] = 'default';
+  }
+}
+
+abstract class Events extends EventsUnion {
+  factory Events({@JsonKey(name: 'events') required List<Event> events}) =
+      _$Events;
+  Events._() : super._();
+
+  factory Events.fromJson(Map<String, dynamic> json) = _$Events.fromJson;
+
+  @JsonKey(name: 'events')
+  List<Event> get events => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $EventsCopyWith<Events> get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $EventsErrorCopyWith<$Res> {
+  factory $EventsErrorCopyWith(
+          EventsError value, $Res Function(EventsError) then) =
+      _$EventsErrorCopyWithImpl<$Res>;
+  $Res call({ErrorResult error});
+
+  $ErrorResultCopyWith<$Res> get error;
+}
+
+/// @nodoc
+class _$EventsErrorCopyWithImpl<$Res> extends _$EventsUnionCopyWithImpl<$Res>
+    implements $EventsErrorCopyWith<$Res> {
+  _$EventsErrorCopyWithImpl(
+      EventsError _value, $Res Function(EventsError) _then)
+      : super(_value, (v) => _then(v as EventsError));
+
+  @override
+  EventsError get _value => super._value as EventsError;
+
+  @override
+  $Res call({
+    Object? error = freezed,
+  }) {
+    return _then(EventsError(
+      error == freezed
+          ? _value.error
+          : error // ignore: cast_nullable_to_non_nullable
+              as ErrorResult,
+    ));
+  }
+
+  @override
+  $ErrorResultCopyWith<$Res> get error {
+    return $ErrorResultCopyWith<$Res>(_value.error, (value) {
+      return _then(_value.copyWith(error: value));
+    });
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$EventsError extends EventsError {
+  _$EventsError(this.error) : super._();
+
+  factory _$EventsError.fromJson(Map<String, dynamic> json) =>
+      _$_$EventsErrorFromJson(json);
+
+  @override
+  final ErrorResult error;
+
+  @override
+  String toString() {
+    return 'EventsUnion.error(error: $error)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is EventsError &&
+            (identical(other.error, error) ||
+                const DeepCollectionEquality().equals(other.error, error)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^ const DeepCollectionEquality().hash(error);
+
+  @JsonKey(ignore: true)
+  @override
+  $EventsErrorCopyWith<EventsError> get copyWith =>
+      _$EventsErrorCopyWithImpl<EventsError>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>(
+    TResult Function(@JsonKey(name: 'events') List<Event> events) $default, {
+    required TResult Function(ErrorResult error) error,
+    required TResult Function() loading,
+  }) {
+    return error(this.error);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(@JsonKey(name: 'events') List<Event> events)? $default, {
+    TResult Function(ErrorResult error)? error,
+    TResult Function()? loading,
+    required TResult orElse(),
+  }) {
+    if (error != null) {
+      return error(this.error);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>(
+    TResult Function(Events value) $default, {
+    required TResult Function(EventsError value) error,
+    required TResult Function(EventsLoading value) loading,
+  }) {
+    return error(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(Events value)? $default, {
+    TResult Function(EventsError value)? error,
+    TResult Function(EventsLoading value)? loading,
+    required TResult orElse(),
+  }) {
+    if (error != null) {
+      return error(this);
+    }
+    return orElse();
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$_$EventsErrorToJson(this)..['runtimeType'] = 'error';
+  }
+}
+
+abstract class EventsError extends EventsUnion {
+  factory EventsError(ErrorResult error) = _$EventsError;
+  EventsError._() : super._();
+
+  factory EventsError.fromJson(Map<String, dynamic> json) =
+      _$EventsError.fromJson;
+
+  ErrorResult get error => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $EventsErrorCopyWith<EventsError> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $EventsLoadingCopyWith<$Res> {
+  factory $EventsLoadingCopyWith(
+          EventsLoading value, $Res Function(EventsLoading) then) =
+      _$EventsLoadingCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class _$EventsLoadingCopyWithImpl<$Res> extends _$EventsUnionCopyWithImpl<$Res>
+    implements $EventsLoadingCopyWith<$Res> {
+  _$EventsLoadingCopyWithImpl(
+      EventsLoading _value, $Res Function(EventsLoading) _then)
+      : super(_value, (v) => _then(v as EventsLoading));
+
+  @override
+  EventsLoading get _value => super._value as EventsLoading;
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$EventsLoading extends EventsLoading {
+  _$EventsLoading() : super._();
+
+  factory _$EventsLoading.fromJson(Map<String, dynamic> json) =>
+      _$_$EventsLoadingFromJson(json);
+
+  @override
+  String toString() {
+    return 'EventsUnion.loading()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) || (other is EventsLoading);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>(
+    TResult Function(@JsonKey(name: 'events') List<Event> events) $default, {
+    required TResult Function(ErrorResult error) error,
+    required TResult Function() loading,
+  }) {
+    return loading();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(@JsonKey(name: 'events') List<Event> events)? $default, {
+    TResult Function(ErrorResult error)? error,
+    TResult Function()? loading,
+    required TResult orElse(),
+  }) {
+    if (loading != null) {
+      return loading();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>(
+    TResult Function(Events value) $default, {
+    required TResult Function(EventsError value) error,
+    required TResult Function(EventsLoading value) loading,
+  }) {
+    return loading(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(Events value)? $default, {
+    TResult Function(EventsError value)? error,
+    TResult Function(EventsLoading value)? loading,
+    required TResult orElse(),
+  }) {
+    if (loading != null) {
+      return loading(this);
+    }
+    return orElse();
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$_$EventsLoadingToJson(this)..['runtimeType'] = 'loading';
+  }
+}
+
+abstract class EventsLoading extends EventsUnion {
+  factory EventsLoading() = _$EventsLoading;
+  EventsLoading._() : super._();
+
+  factory EventsLoading.fromJson(Map<String, dynamic> json) =
+      _$EventsLoading.fromJson;
 }
 
 EventSectionItemUnion _$EventSectionItemUnionFromJson(
@@ -2523,4 +4355,515 @@ abstract class EventDinnerSection extends EventSectionItemUnion {
   @JsonKey(ignore: true)
   $EventDinnerSectionCopyWith<EventDinnerSection> get copyWith =>
       throw _privateConstructorUsedError;
+}
+
+EventSectionItemsUnion _$EventSectionItemsUnionFromJson(
+    Map<String, dynamic> json) {
+  switch (json['runtimeType'] as String) {
+    case 'default':
+      return EventSectionItems.fromJson(json);
+    case 'error':
+      return EventSectionItemsError.fromJson(json);
+    case 'loading':
+      return EventSectionItemsLoading.fromJson(json);
+
+    default:
+      throw FallThroughError();
+  }
+}
+
+/// @nodoc
+class _$EventSectionItemsUnionTearOff {
+  const _$EventSectionItemsUnionTearOff();
+
+  EventSectionItems call(
+      {@JsonKey(name: 'eventSections')
+          required List<EventSectionItemUnion> eventSectionItems}) {
+    return EventSectionItems(
+      eventSectionItems: eventSectionItems,
+    );
+  }
+
+  EventSectionItemsError error(ErrorResult error) {
+    return EventSectionItemsError(
+      error,
+    );
+  }
+
+  EventSectionItemsLoading loading() {
+    return EventSectionItemsLoading();
+  }
+
+  EventSectionItemsUnion fromJson(Map<String, Object> json) {
+    return EventSectionItemsUnion.fromJson(json);
+  }
+}
+
+/// @nodoc
+const $EventSectionItemsUnion = _$EventSectionItemsUnionTearOff();
+
+/// @nodoc
+mixin _$EventSectionItemsUnion {
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>(
+    TResult Function(
+            @JsonKey(name: 'eventSections')
+                List<EventSectionItemUnion> eventSectionItems)
+        $default, {
+    required TResult Function(ErrorResult error) error,
+    required TResult Function() loading,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(
+            @JsonKey(name: 'eventSections')
+                List<EventSectionItemUnion> eventSectionItems)?
+        $default, {
+    TResult Function(ErrorResult error)? error,
+    TResult Function()? loading,
+    required TResult orElse(),
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>(
+    TResult Function(EventSectionItems value) $default, {
+    required TResult Function(EventSectionItemsError value) error,
+    required TResult Function(EventSectionItemsLoading value) loading,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(EventSectionItems value)? $default, {
+    TResult Function(EventSectionItemsError value)? error,
+    TResult Function(EventSectionItemsLoading value)? loading,
+    required TResult orElse(),
+  }) =>
+      throw _privateConstructorUsedError;
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $EventSectionItemsUnionCopyWith<$Res> {
+  factory $EventSectionItemsUnionCopyWith(EventSectionItemsUnion value,
+          $Res Function(EventSectionItemsUnion) then) =
+      _$EventSectionItemsUnionCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class _$EventSectionItemsUnionCopyWithImpl<$Res>
+    implements $EventSectionItemsUnionCopyWith<$Res> {
+  _$EventSectionItemsUnionCopyWithImpl(this._value, this._then);
+
+  final EventSectionItemsUnion _value;
+  // ignore: unused_field
+  final $Res Function(EventSectionItemsUnion) _then;
+}
+
+/// @nodoc
+abstract class $EventSectionItemsCopyWith<$Res> {
+  factory $EventSectionItemsCopyWith(
+          EventSectionItems value, $Res Function(EventSectionItems) then) =
+      _$EventSectionItemsCopyWithImpl<$Res>;
+  $Res call(
+      {@JsonKey(name: 'eventSections')
+          List<EventSectionItemUnion> eventSectionItems});
+}
+
+/// @nodoc
+class _$EventSectionItemsCopyWithImpl<$Res>
+    extends _$EventSectionItemsUnionCopyWithImpl<$Res>
+    implements $EventSectionItemsCopyWith<$Res> {
+  _$EventSectionItemsCopyWithImpl(
+      EventSectionItems _value, $Res Function(EventSectionItems) _then)
+      : super(_value, (v) => _then(v as EventSectionItems));
+
+  @override
+  EventSectionItems get _value => super._value as EventSectionItems;
+
+  @override
+  $Res call({
+    Object? eventSectionItems = freezed,
+  }) {
+    return _then(EventSectionItems(
+      eventSectionItems: eventSectionItems == freezed
+          ? _value.eventSectionItems
+          : eventSectionItems // ignore: cast_nullable_to_non_nullable
+              as List<EventSectionItemUnion>,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$EventSectionItems extends EventSectionItems {
+  _$EventSectionItems(
+      {@JsonKey(name: 'eventSections') required this.eventSectionItems})
+      : super._();
+
+  factory _$EventSectionItems.fromJson(Map<String, dynamic> json) =>
+      _$_$EventSectionItemsFromJson(json);
+
+  @override
+  @JsonKey(name: 'eventSections')
+  final List<EventSectionItemUnion> eventSectionItems;
+
+  @override
+  String toString() {
+    return 'EventSectionItemsUnion(eventSectionItems: $eventSectionItems)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is EventSectionItems &&
+            (identical(other.eventSectionItems, eventSectionItems) ||
+                const DeepCollectionEquality()
+                    .equals(other.eventSectionItems, eventSectionItems)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(eventSectionItems);
+
+  @JsonKey(ignore: true)
+  @override
+  $EventSectionItemsCopyWith<EventSectionItems> get copyWith =>
+      _$EventSectionItemsCopyWithImpl<EventSectionItems>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>(
+    TResult Function(
+            @JsonKey(name: 'eventSections')
+                List<EventSectionItemUnion> eventSectionItems)
+        $default, {
+    required TResult Function(ErrorResult error) error,
+    required TResult Function() loading,
+  }) {
+    return $default(eventSectionItems);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(
+            @JsonKey(name: 'eventSections')
+                List<EventSectionItemUnion> eventSectionItems)?
+        $default, {
+    TResult Function(ErrorResult error)? error,
+    TResult Function()? loading,
+    required TResult orElse(),
+  }) {
+    if ($default != null) {
+      return $default(eventSectionItems);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>(
+    TResult Function(EventSectionItems value) $default, {
+    required TResult Function(EventSectionItemsError value) error,
+    required TResult Function(EventSectionItemsLoading value) loading,
+  }) {
+    return $default(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(EventSectionItems value)? $default, {
+    TResult Function(EventSectionItemsError value)? error,
+    TResult Function(EventSectionItemsLoading value)? loading,
+    required TResult orElse(),
+  }) {
+    if ($default != null) {
+      return $default(this);
+    }
+    return orElse();
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$_$EventSectionItemsToJson(this)..['runtimeType'] = 'default';
+  }
+}
+
+abstract class EventSectionItems extends EventSectionItemsUnion {
+  factory EventSectionItems(
+          {@JsonKey(name: 'eventSections')
+              required List<EventSectionItemUnion> eventSectionItems}) =
+      _$EventSectionItems;
+  EventSectionItems._() : super._();
+
+  factory EventSectionItems.fromJson(Map<String, dynamic> json) =
+      _$EventSectionItems.fromJson;
+
+  @JsonKey(name: 'eventSections')
+  List<EventSectionItemUnion> get eventSectionItems =>
+      throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $EventSectionItemsCopyWith<EventSectionItems> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $EventSectionItemsErrorCopyWith<$Res> {
+  factory $EventSectionItemsErrorCopyWith(EventSectionItemsError value,
+          $Res Function(EventSectionItemsError) then) =
+      _$EventSectionItemsErrorCopyWithImpl<$Res>;
+  $Res call({ErrorResult error});
+
+  $ErrorResultCopyWith<$Res> get error;
+}
+
+/// @nodoc
+class _$EventSectionItemsErrorCopyWithImpl<$Res>
+    extends _$EventSectionItemsUnionCopyWithImpl<$Res>
+    implements $EventSectionItemsErrorCopyWith<$Res> {
+  _$EventSectionItemsErrorCopyWithImpl(EventSectionItemsError _value,
+      $Res Function(EventSectionItemsError) _then)
+      : super(_value, (v) => _then(v as EventSectionItemsError));
+
+  @override
+  EventSectionItemsError get _value => super._value as EventSectionItemsError;
+
+  @override
+  $Res call({
+    Object? error = freezed,
+  }) {
+    return _then(EventSectionItemsError(
+      error == freezed
+          ? _value.error
+          : error // ignore: cast_nullable_to_non_nullable
+              as ErrorResult,
+    ));
+  }
+
+  @override
+  $ErrorResultCopyWith<$Res> get error {
+    return $ErrorResultCopyWith<$Res>(_value.error, (value) {
+      return _then(_value.copyWith(error: value));
+    });
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$EventSectionItemsError extends EventSectionItemsError {
+  _$EventSectionItemsError(this.error) : super._();
+
+  factory _$EventSectionItemsError.fromJson(Map<String, dynamic> json) =>
+      _$_$EventSectionItemsErrorFromJson(json);
+
+  @override
+  final ErrorResult error;
+
+  @override
+  String toString() {
+    return 'EventSectionItemsUnion.error(error: $error)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is EventSectionItemsError &&
+            (identical(other.error, error) ||
+                const DeepCollectionEquality().equals(other.error, error)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^ const DeepCollectionEquality().hash(error);
+
+  @JsonKey(ignore: true)
+  @override
+  $EventSectionItemsErrorCopyWith<EventSectionItemsError> get copyWith =>
+      _$EventSectionItemsErrorCopyWithImpl<EventSectionItemsError>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>(
+    TResult Function(
+            @JsonKey(name: 'eventSections')
+                List<EventSectionItemUnion> eventSectionItems)
+        $default, {
+    required TResult Function(ErrorResult error) error,
+    required TResult Function() loading,
+  }) {
+    return error(this.error);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(
+            @JsonKey(name: 'eventSections')
+                List<EventSectionItemUnion> eventSectionItems)?
+        $default, {
+    TResult Function(ErrorResult error)? error,
+    TResult Function()? loading,
+    required TResult orElse(),
+  }) {
+    if (error != null) {
+      return error(this.error);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>(
+    TResult Function(EventSectionItems value) $default, {
+    required TResult Function(EventSectionItemsError value) error,
+    required TResult Function(EventSectionItemsLoading value) loading,
+  }) {
+    return error(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(EventSectionItems value)? $default, {
+    TResult Function(EventSectionItemsError value)? error,
+    TResult Function(EventSectionItemsLoading value)? loading,
+    required TResult orElse(),
+  }) {
+    if (error != null) {
+      return error(this);
+    }
+    return orElse();
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$_$EventSectionItemsErrorToJson(this)..['runtimeType'] = 'error';
+  }
+}
+
+abstract class EventSectionItemsError extends EventSectionItemsUnion {
+  factory EventSectionItemsError(ErrorResult error) = _$EventSectionItemsError;
+  EventSectionItemsError._() : super._();
+
+  factory EventSectionItemsError.fromJson(Map<String, dynamic> json) =
+      _$EventSectionItemsError.fromJson;
+
+  ErrorResult get error => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $EventSectionItemsErrorCopyWith<EventSectionItemsError> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $EventSectionItemsLoadingCopyWith<$Res> {
+  factory $EventSectionItemsLoadingCopyWith(EventSectionItemsLoading value,
+          $Res Function(EventSectionItemsLoading) then) =
+      _$EventSectionItemsLoadingCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class _$EventSectionItemsLoadingCopyWithImpl<$Res>
+    extends _$EventSectionItemsUnionCopyWithImpl<$Res>
+    implements $EventSectionItemsLoadingCopyWith<$Res> {
+  _$EventSectionItemsLoadingCopyWithImpl(EventSectionItemsLoading _value,
+      $Res Function(EventSectionItemsLoading) _then)
+      : super(_value, (v) => _then(v as EventSectionItemsLoading));
+
+  @override
+  EventSectionItemsLoading get _value =>
+      super._value as EventSectionItemsLoading;
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$EventSectionItemsLoading extends EventSectionItemsLoading {
+  _$EventSectionItemsLoading() : super._();
+
+  factory _$EventSectionItemsLoading.fromJson(Map<String, dynamic> json) =>
+      _$_$EventSectionItemsLoadingFromJson(json);
+
+  @override
+  String toString() {
+    return 'EventSectionItemsUnion.loading()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) || (other is EventSectionItemsLoading);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>(
+    TResult Function(
+            @JsonKey(name: 'eventSections')
+                List<EventSectionItemUnion> eventSectionItems)
+        $default, {
+    required TResult Function(ErrorResult error) error,
+    required TResult Function() loading,
+  }) {
+    return loading();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(
+            @JsonKey(name: 'eventSections')
+                List<EventSectionItemUnion> eventSectionItems)?
+        $default, {
+    TResult Function(ErrorResult error)? error,
+    TResult Function()? loading,
+    required TResult orElse(),
+  }) {
+    if (loading != null) {
+      return loading();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>(
+    TResult Function(EventSectionItems value) $default, {
+    required TResult Function(EventSectionItemsError value) error,
+    required TResult Function(EventSectionItemsLoading value) loading,
+  }) {
+    return loading(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(EventSectionItems value)? $default, {
+    TResult Function(EventSectionItemsError value)? error,
+    TResult Function(EventSectionItemsLoading value)? loading,
+    required TResult orElse(),
+  }) {
+    if (loading != null) {
+      return loading(this);
+    }
+    return orElse();
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$_$EventSectionItemsLoadingToJson(this)
+      ..['runtimeType'] = 'loading';
+  }
+}
+
+abstract class EventSectionItemsLoading extends EventSectionItemsUnion {
+  factory EventSectionItemsLoading() = _$EventSectionItemsLoading;
+  EventSectionItemsLoading._() : super._();
+
+  factory EventSectionItemsLoading.fromJson(Map<String, dynamic> json) =
+      _$EventSectionItemsLoading.fromJson;
 }

@@ -21,7 +21,7 @@ fs.readdir(directoryPath, function(err, files) {
     var lastDotIndex = file.lastIndexOf(".");
 
     var menu = require("./files/" + file);
-
+    console.log(menu);
     menu.forEach(function(obj) {
       firestore
         .collection(file.substring(0, lastDotIndex))

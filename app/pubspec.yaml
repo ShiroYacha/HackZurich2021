@@ -38,7 +38,9 @@ dependencies:
   material_design_icons_flutter: ^5.0.5955-rc.1
   flutter_custom_clippers: ^2.0.0
   flutter_slidable: ^1.0.0-dev.9
-
+  cloud_functions: ^3.0.3
+  tuple: ^2.0.0
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter

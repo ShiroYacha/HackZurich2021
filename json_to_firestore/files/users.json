@@ -1,0 +1,51 @@
+[
+    {
+        "id": "dD2gNSPcPqSdTTUW8JJiTkZHZOG3",
+        "name": "Min",
+        "avatar_url": "https://gravatar.com/avatar/99ccb3b8453ee55823743a265b0f865a?s=400&d=robohash&r=x",
+        "community_ids": ["community1"],
+        "event_ids": []
+    },
+    {
+        "id": "user1",
+        "name": "John",
+        "avatar_url": "https://gravatar.com/avatar/1f8a84d0fbe0975faae3a65519d61539?s=400&d=robohash&r=x",
+        "community_ids": ["community1"],
+        "event_ids": ["event1"]
+    },
+    {
+        "id": "user2",
+        "name": "Kate",
+        "avatar_url": "https://gravatar.com/avatar/60080cd9349cfefbfe35f4a0b96e9393?s=400&d=robohash&r=x",
+        "community_ids": ["community1"],
+        "event_ids": ["event1"]
+    },
+    {
+        "id": "user3",
+        "name": "Peter",
+        "avatar_url": "https://robohash.org/80b4ecb74ee738b3e00e90d3d87fe872?set=set4&bgset=&size=400x400",
+        "community_ids": ["community1"],
+        "event_ids": []
+    },
+    {
+        "id": "user4",
+        "name": "Mary",
+        "avatar_url": "https://robohash.org/60080cd9349cfefbfe35f4a0b96e9393?set=set4&bgset=&size=400x400",
+        "community_ids": ["community1"],
+        "event_ids": ["event1"]
+    },
+    {
+        "id": "user5",
+        "name": "Scott",
+        "avatar_url": "https://gravatar.com/avatar/7fd75b3a42e8751c83d767344b27947e?s=400&d=robohash&r=x",
+        "community_ids": ["community1"],
+        "event_ids": []
+    },
+    {
+        "id": "user6",
+        "name": "Daniel",
+        "avatar_url": "https://robohash.org/6975a93e497ec24924d992ac220c2204?set=set4&bgset=&size=400x400",
+        "community_ids": ["community1"],
+        "event_ids": []
+    }
+]

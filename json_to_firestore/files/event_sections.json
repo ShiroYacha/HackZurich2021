@@ -1,0 +1,66 @@
+[
+    {
+        "id": "event1_location1",
+        "type": "location",
+        "event_id": "event1",
+        "community_id": "community1",
+        "title": "Melchsee-Frutt",
+        "subtitle": "Sarnerstrasse 1, 6064 Kerns",
+        "decision": "maybe",
+        "yes_participant_ids": ["user1"],
+        "maybe_participant_ids": [],
+        "no_participant_ids": []
+    },
+    {
+        "id": "event1_time1",
+        "type": "time",
+        "event_id": "event1",
+        "community_id": "community1",
+        "title": "Sat 12, Oct 2021",
+        "subtitle": "09:00 - 16:00",
+        "decision": "maybe",
+        "start_at": "2021/10/12T09:00:00",
+        "end_at": "2021/10/12T16:00:00",
+        "yes_participant_ids": [],
+        "maybe_participant_ids": ["user2"],
+        "no_participant_ids": []
+    },
+    {
+        "id": "event1_time2",
+        "type": "time",
+        "event_id": "event1",
+        "community_id": "community1",
+        "title": "Sun 13, Oct 2021",
+        "subtitle": "09:00 - 16:00",
+        "start_at": "2021/10/13T09:00:00",
+        "end_at": "2021/10/13T16:00:00",
+        "decision": "maybe",
+        "yes_participant_ids": [],
+        "maybe_participant_ids": ["user1"],
+        "no_participant_ids": []
+    },
+    {
+        "id": "event1_lunch1",
+        "type": "lunch",
+        "event_id": "event1",
+        "community_id": "community1",
+        "title": "Bring own food",
+        "subtitle": "Bring your own food and share",
+        "decision": "yes",
+        "yes_participant_ids": ["user1","user2","user3"],
+        "maybe_participant_ids": [],
+        "no_participant_ids": []
+    },
+    {
+        "id": "event1_dinner1",
+        "type": "dinner",
+        "event_id": "event1",
+        "community_id": "community1",
+        "title": "Dieci pizza",
+        "subtitle": "Eibenstrasse 24, 8045 Zürich",
+        "decision": "maybe",
+        "yes_participant_ids": ["user1"],
+        "maybe_participant_ids": ["user2","user3"],
+        "no_participant_ids": []
+    }
+]

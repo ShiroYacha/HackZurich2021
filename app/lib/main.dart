@@ -1,10 +1,15 @@
 import 'dart:math';
 
+import 'package:collection/src/iterable_extensions.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:app/repository.dart';
 import 'package:app/theme.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import "package:flutter_feather_icons/flutter_feather_icons.dart";
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:pinput/pin_put/pin_put.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
@@ -15,20 +20,40 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'model.dart';
 import 'page_routing.dart';
 
-void main() {
-  runApp(MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+
+  runApp(ProviderScope(
+    child: MyApp(),
+    overrides: [
+      myUserIdProvider
+          .overrideWithValue(StateController('dD2gNSPcPqSdTTUW8JJiTkZHZOG3')),
+      currentCommunityIdProvider
+          .overrideWithValue(StateController('community1'))
+    ],
+  ));
 }
 
 const _animationDuration = Duration(seconds: 1);
 const _animationInstantDuration = Duration(milliseconds: 200);
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+class MyApp extends HookWidget {
   @override
   Widget build(BuildContext context) {
+    final myId = useProvider(myUserIdProvider);
+    final me = useProvider(myUserProvider);
+    final usersRepository = useProvider(usersRepositoryProvider.notifier);
+    final communitiesRepository =
+        useProvider(communitiesRepositoryProvider.notifier);
+    useEffect(() {
+      usersRepository.loadUsers().then((_) {
+        communitiesRepository.loadCommunities();
+      });
+    }, [myId]);
     return MaterialApp(
       theme: themeData,
-      home: CommunityPage(),
+      home: me.state != null ? CommunityPage() : Loader(),
     );
   }
 }
@@ -266,158 +291,253 @@ class CommunityPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final communityId = useProvider(currentCommunityIdProvider);
+    final community = useProvider(currentCommunityProvider);
+    final communitiesRepository =
+        useProvider(communitiesRepositoryProvider.notifier);
+    final communityUsers = useProvider(communityUsersRepositoryProvider);
+    final communityUsersRepository =
+        useProvider(communityUsersRepositoryProvider.notifier);
+    final events = useProvider(eventsRepositoryProvider);
+    final eventsRepository = useProvider(eventsRepositoryProvider.notifier);
+    useEffect(() {
+      communitiesRepository.loadCommunities().then((_) {
+        communityUsersRepository.loadUsers();
+        eventsRepository.loadEvents();
+      });
+    }, [
+      communityId,
+    ]);
     return Scaffold(
       backgroundColor: theme.backgroundColor,
       body: Stack(
         children: [
-          SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Image.asset(
-                  'assets/images/hz_rainycity.gif',
-                  fit: BoxFit.cover,
-                  alignment: Alignment.bottomRight,
-                  height: 250,
-                ),
-                spacer,
-                Row(
-                  children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Cyber city 2099',
-                            style: titleTextStyle,
-                          ),
-                          Text(
-                            'Company AG',
-                            style: buttonTextStyle,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ).padHorizontal(),
-                spacerBig,
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Align(
-                      child: Text(
-                        '7 members',
-                        style: buttonBigTextStyle,
-                      ),
-                      alignment: Alignment.topLeft,
-                    ),
-                    SizedBox(
-                      height: 100,
-                      child: ListView(
-                        shrinkWrap: true,
-                        scrollDirection: Axis.horizontal,
-                        children: [
-                          ...List.generate(
-                            7,
-                            (index) => Padding(
-                              padding: const EdgeInsets.only(right: 10),
-                              child: Avatar(
-                                  'https://gravatar.com/avatar/39e719c84bd32b56241c7ffccd559aa6?s=400&d=robohash&r=x'),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ).padHorizontal(),
-                spacer,
-                Text(
-                  '4 Upcoming quests',
-                  style: buttonBigTextStyle,
-                ).padHorizontal(),
-                spacer,
-                Column(
-                  children: List.generate(
-                    4,
-                    (index) => Stack(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(top: 12, bottom: 20),
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.of(context).push(SlideRightLeftRoute(
-                                enterWidget: EventPage(),
-                                oldWidget: this,
-                              ));
-                            },
-                            child: ListTile(
-                              tileColor: theme.primaryColor,
-                              contentPadding: const EdgeInsets.all(10),
-                              leading: Icon(
-                                FeatherIcons.codesandbox,
-                                color: Colors.white,
-                                size: 30,
-                              ),
-                              title: Text(
-                                'Mini POC hackathon',
-                                style: buttonBigTextStyle,
-                              ),
-                              subtitle: Text(
-                                'Let\'s get together to build a PoC of the awesome ML framework.',
-                                style: paragraphTextStyle,
-                              ),
-                            ),
-                          ),
-                        ),
-                        Align(
-                            alignment: Alignment.topRight,
-                            child: GroupDecisionBox(yes: 4, maybe: 1, no: 0)),
-                      ],
-                    ),
+          if (community.state == null) Loader(),
+          if (community.state != null)
+            SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Image.asset(
+                    community.state!.backgroundUrl!,
+                    fit: BoxFit.cover,
+                    alignment: Alignment.bottomRight,
+                    height: 250,
                   ),
-                ),
-              ],
+                  spacer,
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              community.state!.name,
+                              style: titleTextStyle,
+                            ),
+                            Text(
+                              community.state!.label,
+                              style: buttonTextStyle,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ).padHorizontal(),
+                  spacerBig,
+                  communityUsers.maybeWhen(
+                      (users) => Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Align(
+                                child: Text(
+                                  '${users.length} members',
+                                  style: buttonBigTextStyle,
+                                ),
+                                alignment: Alignment.topLeft,
+                              ),
+                              spacer,
+                              SizedBox(
+                                height: 100,
+                                child: ListView(
+                                    shrinkWrap: true,
+                                    scrollDirection: Axis.horizontal,
+                                    children: users
+                                        .map((u) => Padding(
+                                              padding: const EdgeInsets.only(
+                                                  right: 10),
+                                              child: Avatar(u.avatarUrl!),
+                                            ))
+                                        .toList()),
+                              ),
+                            ],
+                          ).padHorizontal(),
+                      orElse: () => Loader()),
+                  spacer,
+                  ...events.maybeWhen((es) {
+                    final upcomingEvents = es
+                        .where((e) => e.status == EventStatus.upcoming)
+                        .toList();
+                    final pendingEvents = es
+                        .where((e) => e.status == EventStatus.pending)
+                        .toList();
+                    return [
+                      Text(
+                        '${upcomingEvents.length} Upcoming quest(s)',
+                        style: buttonBigTextStyle,
+                      ).padHorizontal(),
+                      spacer,
+                      if (upcomingEvents.isEmpty) NoEventsLabel(),
+                      ...upcomingEvents
+                          .map(
+                            (e) => EventCard(e),
+                          )
+                          .toList(),
+                      Text(
+                        '${pendingEvents.length} Pending quest(s)',
+                        style: buttonBigTextStyle,
+                      ).padHorizontal(),
+                      spacer,
+                      if (pendingEvents.isEmpty) NoEventsLabel(),
+                      ...pendingEvents
+                          .map(
+                            (e) => EventCard(e),
+                          )
+                          .toList(),
+                    ];
+                  }, orElse: () => [Loader()]),
+                ],
+              ),
             ),
-          ),
           BackButton(),
         ],
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {},
-        label: Text(
-          'Create a quest',
-          style: buttonTextStyle,
-        ),
-        icon: Icon(FeatherIcons.plus),
-      ),
+      floatingActionButton: community.state != null
+          ? FloatingActionButton.extended(
+              onPressed: () {},
+              label: Text(
+                'Create a quest',
+                style: buttonTextStyle,
+              ),
+              icon: Icon(FeatherIcons.plus),
+            )
+          : null,
     );
   }
 }
 
-class Avatar extends StatelessWidget {
-  final String uri;
-  const Avatar(
-    this.uri, {
+class EventCard extends HookWidget {
+  final Event event;
+  const EventCard(
+    this.event, {
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return CircleAvatar(
-      radius: 30,
-      backgroundColor: theme.shadowColor,
-      child: CachedNetworkImage(
-        imageUrl: uri,
-      ),
+    final currentEventId = useProvider(currentEventIdProvider);
+    return Stack(
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(top: 12, bottom: 20),
+          child: GestureDetector(
+            onTap: () {
+              currentEventId.state = event.id;
+              Navigator.of(context)
+                  .push(CupertinoPageRoute(builder: (ctx) => EventPage(event)));
+            },
+            child: ListTile(
+              tileColor: theme.primaryColor,
+              contentPadding: const EdgeInsets.all(10),
+              leading: Icon(
+                event.category.icon,
+                color: Colors.white,
+                size: 30,
+              ),
+              title: Text(
+                event.name,
+                style: buttonBigTextStyle,
+              ),
+              subtitle: Text(
+                event.description,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: paragraphTextStyle,
+              ),
+            ),
+          ),
+        ),
+        Align(
+            alignment: Alignment.topRight,
+            child: GroupDecisionBox(
+              yes: event.yesParticipantIds.length,
+              maybe: event.maybeParticipantIds.length,
+              no: event.noParticipantIds.length,
+            )),
+      ],
+    );
+  }
+}
+
+class Avatar extends StatelessWidget {
+  final String uri;
+  final EventDecision? decision;
+  const Avatar(
+    this.uri, {
+    this.decision,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Stack(
+      children: [
+        CircleAvatar(
+          radius: 30,
+          backgroundColor: theme.shadowColor,
+          child: ClipOval(
+            child: CachedNetworkImage(
+              imageUrl: uri,
+              width: 50,
+              height: 50,
+            ),
+          ),
+        ),
+        if (decision != null)
+          Align(
+              alignment: Alignment.topRight,
+              child: CircleAvatar(
+                backgroundColor: decision!.color,
+                radius: 10,
+                child: Icon(decision!.icon, size: 16),
+              ))
+      ],
     );
   }
 }
 
 class EventPage extends HookWidget {
+  final Event event;
+  const EventPage(this.event);
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final myId = useProvider(myUserIdProvider);
+    final eventUsers = useProvider(eventUsersRepositoryProvider);
+    final eventUsersRepository =
+        useProvider(eventUsersRepositoryProvider.notifier);
+    final eventSectionItems = useProvider(eventSectionItemsRepositoryProvider);
+    final eventSectionItemsRepository =
+        useProvider(eventSectionItemsRepositoryProvider.notifier);
+    useEffect(() {
+      eventUsersRepository.loadUsers();
+      eventSectionItemsRepository.loadEventSectionItems();
+    }, [event]);
+
+    final myDecision = event.participantDecision(myId.state!);
     return Scaffold(
         backgroundColor: theme.backgroundColor,
         body: Stack(
@@ -427,7 +547,7 @@ class EventPage extends HookWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Image.asset(
-                      'assets/images/hz_roadtrip.gif',
+                      event.backgroundUrl!,
                       fit: BoxFit.cover,
                       alignment: Alignment.bottomRight,
                       height: 250,
@@ -437,7 +557,7 @@ class EventPage extends HookWidget {
                       children: [
                         Expanded(
                           child: Text(
-                            'Go for a hike',
+                            event.name,
                             style: titleTextStyle,
                           ),
                         ),
@@ -454,7 +574,7 @@ class EventPage extends HookWidget {
                     EventCategorySection(EventCategory.hiking).padHorizontal(),
                     spacerSmall,
                     Text(
-                      'Let\'s go for an short Via ferrata hike near Zürich.',
+                      event.description,
                       style: paragraphTextStyle,
                     ).padHorizontal(),
                     spacer,
@@ -469,90 +589,118 @@ class EventPage extends HookWidget {
                       },
                     ).padHorizontal(),
                     spacerSmall,
-                    Avatar('https://gravatar.com/avatar/39e719c84bd32b56241c7ffccd559aa6?s=400&d=robohash&r=x')
+                    eventUsers
+                        .maybeMap(
+                            (users) => SizedBox(
+                                  height: 100,
+                                  child: ListView(
+                                      shrinkWrap: true,
+                                      scrollDirection: Axis.horizontal,
+                                      children: users.users
+                                          .map((u) => Padding(
+                                                padding: const EdgeInsets.only(
+                                                    right: 10),
+                                                child: Avatar(
+                                                  u.avatarUrl!,
+                                                  decision:
+                                                      event.participantDecision(
+                                                          u.id),
+                                                ),
+                                              ))
+                                          .toList()),
+                                ),
+                            orElse: () => Loader())
                         .padHorizontal(),
                     spacer,
-                    SectionTitle(
-                      title: 'Time',
-                      actionText: 'Propose',
-                      action: () {},
-                    ).padHorizontal(),
-                    spacer,
-                    SectionDecisionBox(EventSectionItemUnion.time(
-                      type: 'time',
-                      decision: EventDecision.maybe,
-                      title: 'Sat 12, Oct 2021',
-                      subtitle: '09:00 - 16:00',
-                      yesParticipantIds: ['', '', ''],
-                      maybeParticipantIds: [
-                        '',
-                        '',
-                      ],
-                      noParticipantIds: [],
-                    )),
-                    spacerSmall,
-                    SectionDecisionBox(EventSectionItemUnion.time(
-                      type: 'time',
-                      decision: EventDecision.maybe,
-                      title: 'Sun 13, Oct 2021',
-                      subtitle: '09:00 - 16:00',
-                      yesParticipantIds: ['', '', ''],
-                      maybeParticipantIds: [
-                        '',
-                      ],
-                      noParticipantIds: [],
-                    )),
-                    spacer,
-                    SectionTitle(
-                      title: 'Location',
-                      actionText: 'Propose',
-                      action: () {},
-                    ).padHorizontal(),
-                    spacer,
-                    SectionDecisionBox(EventSectionItemUnion.location(
-                      type: 'location',
-                      decision: EventDecision.maybe,
-                      title: 'Melchsee-Frutt',
-                      subtitle: 'Sarnerstrasse 1, 6064 Kerns',
-                      yesParticipantIds: ['', '', ''],
-                      maybeParticipantIds: [
-                        '',
-                      ],
-                      noParticipantIds: [],
-                    )),
-                    spacer,
-                    SectionTitle(
-                      title: 'Lunch',
-                      actionText: 'Propose',
-                      action: null,
-                    ).padHorizontal(),
-                    spacer,
-                    SectionDecisionBox(EventSectionItemUnion.lunch(
-                      type: 'lunch',
-                      decision: EventDecision.yes,
-                      title: 'Bring own food',
-                      subtitle: 'Bring your own food and share',
-                      yesParticipantIds: ['', '', ''],
-                      maybeParticipantIds: [],
-                      noParticipantIds: [],
-                    )),
-                    spacer,
-                    SectionTitle(
-                      title: 'Dinner',
-                      actionText: 'Propose',
-                      action: null,
-                    ).padHorizontal(),
-                    spacer,
-                    SectionDecisionBox(EventSectionItemUnion.dinner(
-                      type: 'dinner',
-                      decision: EventDecision.yes,
-                      title: 'Dieci pizza',
-                      subtitle: 'Eibenstrasse 24, 8045 Zürich',
-                      yesParticipantIds: ['', '', ''],
-                      maybeParticipantIds: [],
-                      noParticipantIds: [],
-                    )),
-                    spacer,
+                    ...eventSectionItems.map((value) {
+                      final items = <Widget>[];
+                      if (value.eventSectionItems
+                          .any((element) => element is EventTimeSection)) {
+                        final decidedItem = value.eventSectionItems
+                            .singleWhereOrNull((e) =>
+                                e is EventTimeSection &&
+                                e.decision == EventDecision.yes);
+                        items.addAll([
+                          SectionTitle(
+                            title: 'Time',
+                            actionText: 'Propose',
+                            action: decidedItem == null ? () {} : null,
+                          ).padHorizontal(),
+                          spacer,
+                          ...(decidedItem != null
+                                  ? [decidedItem]
+                                  : value.eventSectionItems)
+                              .whereType<EventTimeSection>()
+                              .map((e) => SectionDecisionBox(e))
+                        ]);
+                      }
+                      if (value.eventSectionItems
+                          .any((element) => element is EventLocationSection)) {
+                        final decidedItem = value.eventSectionItems
+                            .singleWhereOrNull((e) =>
+                                e is EventLocationSection &&
+                                e.decision == EventDecision.yes);
+                        items.addAll([
+                          SectionTitle(
+                            title: 'Location',
+                            actionText: 'Propose',
+                            action: decidedItem == null ? () {} : null,
+                          ).padHorizontal(),
+                          spacer,
+                          ...(decidedItem != null
+                                  ? [decidedItem]
+                                  : value.eventSectionItems)
+                              .whereType<EventLocationSection>()
+                              .map((e) => SectionDecisionBox(e))
+                        ]);
+                      }
+                      if (value.eventSectionItems
+                          .any((element) => element is EventLunchSection)) {
+                        final decidedItem = value.eventSectionItems
+                            .singleWhereOrNull((e) =>
+                                e is EventLunchSection &&
+                                e.decision == EventDecision.yes);
+                        items.addAll([
+                          SectionTitle(
+                            title: 'Lunch',
+                            actionText: 'Propose',
+                            action: decidedItem == null ? () {} : null,
+                          ).padHorizontal(),
+                          spacer,
+                          ...(decidedItem != null
+                                  ? [decidedItem]
+                                  : value.eventSectionItems)
+                              .whereType<EventLunchSection>()
+                              .map((e) => SectionDecisionBox(e))
+                        ]);
+                      }
+                      if (value.eventSectionItems
+                          .any((element) => element is EventDinnerSection)) {
+                        final decidedItem = value.eventSectionItems
+                            .singleWhereOrNull((e) =>
+                                e is EventDinnerSection &&
+                                e.decision == EventDecision.yes);
+                        items.addAll([
+                          SectionTitle(
+                            title: 'Dinner',
+                            actionText: 'Propose',
+                            action: decidedItem == null ? () {} : null,
+                          ).padHorizontal(),
+                          spacer,
+                          ...(decidedItem != null
+                                  ? [decidedItem]
+                                  : value.eventSectionItems)
+                              .whereType<EventDinnerSection>()
+                              .map((e) => SectionDecisionBox(e))
+                        ]);
+                      }
+                      return items;
+                    },
+                        error: (error) => [ErrorLabel(error.error)],
+                        loading: (loading) => [Loader()]),
+                    spacerHuge,
+                    spacerHuge,
+                    spacerHuge,
                   ]),
             ),
             BackButton(),
@@ -587,8 +735,10 @@ class EventPage extends HookWidget {
                           )
                           .toList()));
             },
-            icon: Icon(MdiIcons.progressQuestion),
-            label: Text('Maybe going', style: buttonTextStyle)));
+            backgroundColor: myDecision?.color ?? theme.colorScheme.secondary,
+            icon: Icon(myDecision?.icon ?? FeatherIcons.userPlus),
+            label: Text(myDecision?.longTitle ?? 'I want to join',
+                style: buttonTextStyle)));
   }
 }
 
@@ -805,5 +955,38 @@ class ParticipantInvitePanel extends HookWidget {
   @override
   Widget build(BuildContext context) {
     return ListView();
+  }
+}
+
+class Loader extends StatelessWidget {
+  const Loader({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+        child: CircularProgressIndicator(
+      color: Colors.white,
+    ));
+  }
+}
+
+class ErrorLabel extends StatelessWidget {
+  final ErrorResult error;
+  ErrorLabel(this.error);
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(error.message);
+  }
+}
+
+class NoEventsLabel extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+        child: Padding(
+            padding: const EdgeInsets.only(bottom: 30),
+            child: Text('Nothing here',
+                style: buttonTextStyle.copyWith(color: Colors.white54))));
   }
 }
