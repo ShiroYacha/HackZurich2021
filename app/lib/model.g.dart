@@ -72,8 +72,8 @@ _$_Community _$_$_CommunityFromJson(Map<String, dynamic> json) {
     id: json['id'] as String,
     name: json['name'] as String,
     label: json['label'] as String,
-    invitation_code: json['invitation_code'] as String,
-    magic_word: json['magic_word'] as String,
+    invitationCode: json['invitation_code'] as String,
+    magicWord: json['magic_word'] as String,
     backgroundUrl: json['background_url'] as String?,
   );
 }
@@ -83,8 +83,8 @@ Map<String, dynamic> _$_$_CommunityToJson(_$_Community instance) =>
       'id': instance.id,
       'name': instance.name,
       'label': instance.label,
-      'invitation_code': instance.invitation_code,
-      'magic_word': instance.magic_word,
+      'invitation_code': instance.invitationCode,
+      'magic_word': instance.magicWord,
       'background_url': instance.backgroundUrl,
     };
 

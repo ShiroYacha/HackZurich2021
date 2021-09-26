@@ -884,15 +884,15 @@ class _$CommunityTearOff {
       {required String id,
       required String name,
       required String label,
-      required String invitation_code,
-      required String magic_word,
+      required String invitationCode,
+      required String magicWord,
       String? backgroundUrl}) {
     return _Community(
       id: id,
       name: name,
       label: label,
-      invitation_code: invitation_code,
-      magic_word: magic_word,
+      invitationCode: invitationCode,
+      magicWord: magicWord,
       backgroundUrl: backgroundUrl,
     );
   }
@@ -910,8 +910,8 @@ mixin _$Community {
   String get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   String get label => throw _privateConstructorUsedError;
-  String get invitation_code => throw _privateConstructorUsedError;
-  String get magic_word => throw _privateConstructorUsedError;
+  String get invitationCode => throw _privateConstructorUsedError;
+  String get magicWord => throw _privateConstructorUsedError;
   String? get backgroundUrl => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -928,8 +928,8 @@ abstract class $CommunityCopyWith<$Res> {
       {String id,
       String name,
       String label,
-      String invitation_code,
-      String magic_word,
+      String invitationCode,
+      String magicWord,
       String? backgroundUrl});
 }
 
@@ -946,8 +946,8 @@ class _$CommunityCopyWithImpl<$Res> implements $CommunityCopyWith<$Res> {
     Object? id = freezed,
     Object? name = freezed,
     Object? label = freezed,
-    Object? invitation_code = freezed,
-    Object? magic_word = freezed,
+    Object? invitationCode = freezed,
+    Object? magicWord = freezed,
     Object? backgroundUrl = freezed,
   }) {
     return _then(_value.copyWith(
@@ -963,13 +963,13 @@ class _$CommunityCopyWithImpl<$Res> implements $CommunityCopyWith<$Res> {
           ? _value.label
           : label // ignore: cast_nullable_to_non_nullable
               as String,
-      invitation_code: invitation_code == freezed
-          ? _value.invitation_code
-          : invitation_code // ignore: cast_nullable_to_non_nullable
+      invitationCode: invitationCode == freezed
+          ? _value.invitationCode
+          : invitationCode // ignore: cast_nullable_to_non_nullable
               as String,
-      magic_word: magic_word == freezed
-          ? _value.magic_word
-          : magic_word // ignore: cast_nullable_to_non_nullable
+      magicWord: magicWord == freezed
+          ? _value.magicWord
+          : magicWord // ignore: cast_nullable_to_non_nullable
               as String,
       backgroundUrl: backgroundUrl == freezed
           ? _value.backgroundUrl
@@ -989,8 +989,8 @@ abstract class _$CommunityCopyWith<$Res> implements $CommunityCopyWith<$Res> {
       {String id,
       String name,
       String label,
-      String invitation_code,
-      String magic_word,
+      String invitationCode,
+      String magicWord,
       String? backgroundUrl});
 }
 
@@ -1008,8 +1008,8 @@ class __$CommunityCopyWithImpl<$Res> extends _$CommunityCopyWithImpl<$Res>
     Object? id = freezed,
     Object? name = freezed,
     Object? label = freezed,
-    Object? invitation_code = freezed,
-    Object? magic_word = freezed,
+    Object? invitationCode = freezed,
+    Object? magicWord = freezed,
     Object? backgroundUrl = freezed,
   }) {
     return _then(_Community(
@@ -1025,13 +1025,13 @@ class __$CommunityCopyWithImpl<$Res> extends _$CommunityCopyWithImpl<$Res>
           ? _value.label
           : label // ignore: cast_nullable_to_non_nullable
               as String,
-      invitation_code: invitation_code == freezed
-          ? _value.invitation_code
-          : invitation_code // ignore: cast_nullable_to_non_nullable
+      invitationCode: invitationCode == freezed
+          ? _value.invitationCode
+          : invitationCode // ignore: cast_nullable_to_non_nullable
               as String,
-      magic_word: magic_word == freezed
-          ? _value.magic_word
-          : magic_word // ignore: cast_nullable_to_non_nullable
+      magicWord: magicWord == freezed
+          ? _value.magicWord
+          : magicWord // ignore: cast_nullable_to_non_nullable
               as String,
       backgroundUrl: backgroundUrl == freezed
           ? _value.backgroundUrl
@@ -1048,8 +1048,8 @@ class _$_Community implements _Community {
       {required this.id,
       required this.name,
       required this.label,
-      required this.invitation_code,
-      required this.magic_word,
+      required this.invitationCode,
+      required this.magicWord,
       this.backgroundUrl});
 
   factory _$_Community.fromJson(Map<String, dynamic> json) =>
@@ -1062,15 +1062,15 @@ class _$_Community implements _Community {
   @override
   final String label;
   @override
-  final String invitation_code;
+  final String invitationCode;
   @override
-  final String magic_word;
+  final String magicWord;
   @override
   final String? backgroundUrl;
 
   @override
   String toString() {
-    return 'Community(id: $id, name: $name, label: $label, invitation_code: $invitation_code, magic_word: $magic_word, backgroundUrl: $backgroundUrl)';
+    return 'Community(id: $id, name: $name, label: $label, invitationCode: $invitationCode, magicWord: $magicWord, backgroundUrl: $backgroundUrl)';
   }
 
   @override
@@ -1083,12 +1083,12 @@ class _$_Community implements _Community {
                 const DeepCollectionEquality().equals(other.name, name)) &&
             (identical(other.label, label) ||
                 const DeepCollectionEquality().equals(other.label, label)) &&
-            (identical(other.invitation_code, invitation_code) ||
+            (identical(other.invitationCode, invitationCode) ||
                 const DeepCollectionEquality()
-                    .equals(other.invitation_code, invitation_code)) &&
-            (identical(other.magic_word, magic_word) ||
+                    .equals(other.invitationCode, invitationCode)) &&
+            (identical(other.magicWord, magicWord) ||
                 const DeepCollectionEquality()
-                    .equals(other.magic_word, magic_word)) &&
+                    .equals(other.magicWord, magicWord)) &&
             (identical(other.backgroundUrl, backgroundUrl) ||
                 const DeepCollectionEquality()
                     .equals(other.backgroundUrl, backgroundUrl)));
@@ -1100,8 +1100,8 @@ class _$_Community implements _Community {
       const DeepCollectionEquality().hash(id) ^
       const DeepCollectionEquality().hash(name) ^
       const DeepCollectionEquality().hash(label) ^
-      const DeepCollectionEquality().hash(invitation_code) ^
-      const DeepCollectionEquality().hash(magic_word) ^
+      const DeepCollectionEquality().hash(invitationCode) ^
+      const DeepCollectionEquality().hash(magicWord) ^
       const DeepCollectionEquality().hash(backgroundUrl);
 
   @JsonKey(ignore: true)
@@ -1120,8 +1120,8 @@ abstract class _Community implements Community {
       {required String id,
       required String name,
       required String label,
-      required String invitation_code,
-      required String magic_word,
+      required String invitationCode,
+      required String magicWord,
       String? backgroundUrl}) = _$_Community;
 
   factory _Community.fromJson(Map<String, dynamic> json) =
@@ -1134,9 +1134,9 @@ abstract class _Community implements Community {
   @override
   String get label => throw _privateConstructorUsedError;
   @override
-  String get invitation_code => throw _privateConstructorUsedError;
+  String get invitationCode => throw _privateConstructorUsedError;
   @override
-  String get magic_word => throw _privateConstructorUsedError;
+  String get magicWord => throw _privateConstructorUsedError;
   @override
   String? get backgroundUrl => throw _privateConstructorUsedError;
   @override

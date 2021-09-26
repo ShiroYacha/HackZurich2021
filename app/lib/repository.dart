@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:app/model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/src/iterable_extensions.dart';
+import 'package:flutter/src/foundation/change_notifier.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'firebase_service.dart';
@@ -120,6 +121,18 @@ class CommunitiesRepository extends StateNotifier<CommunitiesUnion> {
             message: '${e.code} = ${e.message}', status: 'APP_ERROR'));
       }
     }
+  }
+
+  Future<void> joinCommunity(Community communityToJoin) async {
+    final firebaseService = _ref.read(firebaseServiceProvider);
+    final myId = _ref.read(myUserIdProvider).state!;
+    // Update user
+    await firebaseService.updateDocument([
+      'users',
+      myId
+    ], {
+      'community_ids': FieldValue.arrayUnion([communityToJoin.id]),
+    });
   }
 }
 

@@ -43,14 +43,18 @@ class FirebaseService {
 
   Future<Map<String, dynamic>?> callFunctionForResult(String functionName,
       {Map<String, dynamic>? data}) async {
-    final parameters = <String, dynamic>{};
-    if (data != null) {
-      parameters.addAll(data);
+    try {
+      final parameters = <String, dynamic>{};
+      if (data != null) {
+        parameters.addAll(data);
+      }
+      final result = await _functions
+          .httpsCallable(functionName)
+          .call<Map<String, dynamic>?>(parameters);
+      return result.data;
+    } on Exception catch (e) {
+      return null;
     }
-    final result = await _functions
-        .httpsCallable(functionName)
-        .call<Map<String, dynamic>?>(parameters);
-    return result.data;
   }
 
   Future callFunction(String functionName, {Map<String, dynamic>? data}) async {

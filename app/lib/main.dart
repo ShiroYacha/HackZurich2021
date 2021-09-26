@@ -29,8 +29,6 @@ void main() async {
     overrides: [
       myUserIdProvider
           .overrideWithValue(StateController('dD2gNSPcPqSdTTUW8JJiTkZHZOG3')),
-      currentCommunityIdProvider
-          .overrideWithValue(StateController('community1'))
     ],
   ));
 }
@@ -115,6 +113,7 @@ class FindTeamPage extends HookWidget {
     final speechMagicWordFound = useState(false);
 
     final communityToJoin = useState<Community?>(null);
+    final communityId = useProvider(currentCommunityIdProvider);
     final communitiesRepository =
         useProvider(communitiesRepositoryProvider.notifier);
 
@@ -133,12 +132,11 @@ class FindTeamPage extends HookWidget {
     void _onSpeechResult(
       SpeechRecognitionResult result,
     ) {
-      print(result.recognizedWords);
       final theme = Theme.of(context);
       if (codeFound &&
           !speechMagicWordFound.value &&
           result.recognizedWords.toLowerCase() ==
-              communityToJoin.value?.magic_word.toLowerCase()) {
+              communityToJoin.value?.magicWord.toLowerCase()) {
         speechMagicWordFound.value = true;
         speechRecording.value = false;
         showModalBottomSheet(
@@ -158,7 +156,10 @@ class FindTeamPage extends HookWidget {
                       Image.asset('assets/images/hz_house.gif'),
                       spacerSmall,
                       ElevatedButton(
-                        onPressed: () {
+                        onPressed: () async {
+                          await communitiesRepository
+                              .joinCommunity(communityToJoin.value!);
+                          communityId.state = communityToJoin.value!.id;
                           Navigator.of(context).pop();
                           Navigator.of(context, rootNavigator: true)
                               .pushReplacement(
@@ -203,11 +204,15 @@ class FindTeamPage extends HookWidget {
                       fieldsCount: 5,
                       onSubmit: (String pin) async {
                         codeFocusNode.unfocus();
+                        BotToast.showLoading();
                         final community = await communitiesRepository
                             .findCommunityByCode(pin);
+                        BotToast.closeAllLoading();
                         communityToJoin.value = community;
                         if (communityToJoin.value == null) {
                           BotToast.showText(text: 'Not found');
+                          codeController!.clear();
+                          codeFocusNode.requestFocus();
                         }
                       },
                       enabled: !codeFound,
@@ -252,12 +257,14 @@ class FindTeamPage extends HookWidget {
                           ),
                         ),
                         onTapDown: (detail) {
+                          print('listening...');
                           speechRecording.value = true;
                           speech.listen(onResult: _onSpeechResult);
                         },
                         onTapUp: (detail) {
                           speechRecording.value = false;
                           speech.stop();
+                          print('stop listening...');
                         },
                       ),
                     spacerBig,

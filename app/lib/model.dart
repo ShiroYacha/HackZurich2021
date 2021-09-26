@@ -75,8 +75,8 @@ class Community with _$Community {
     required String id,
     required String name,
     required String label,
-    required String invitation_code,
-    required String magic_word,
+    required String invitationCode,
+    required String magicWord,
     String? backgroundUrl,
   }) = _Community;
   factory Community.fromJson(Map<String, dynamic> json) =>
