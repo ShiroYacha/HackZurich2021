@@ -62,5 +62,43 @@
         "yes_participant_ids": ["user1"],
         "maybe_participant_ids": ["user2","user3"],
         "no_participant_ids": []
+    },
+    {
+        "id": "event2_location1",
+        "type": "location",
+        "event_id": "event2",
+        "community_id": "community1",
+        "title": "At the office",
+        "subtitle": "Strassestrasse 1, 8001 Zürich",
+        "decision": "yes",
+        "yes_participant_ids": ["user1","user2","user3","user4","user5"],
+        "maybe_participant_ids": [],
+        "no_participant_ids": []
+    },
+    {
+        "id": "event2_time1",
+        "type": "time",
+        "event_id": "event2",
+        "community_id": "community1",
+        "title": "Sat 22, Oct 2021",
+        "subtitle": "09:00 - 19:00",
+        "decision": "yes",
+        "start_at": "2021/10/12T09:00:00",
+        "end_at": "2021/10/12T19:00:00",
+        "yes_participant_ids": ["user1","user2","user4","user5"],
+        "maybe_participant_ids": [],
+        "no_participant_ids": ["user3"]
+    },
+    {
+        "id": "event2_lunch1",
+        "type": "lunch",
+        "event_id": "event2",
+        "community_id": "community1",
+        "title": "Food delivery",
+        "subtitle": "Order on Kitchen Republic",
+        "decision": "yes",
+        "yes_participant_ids": ["user1","user2","user4","user5"],
+        "maybe_participant_ids": [],
+        "no_participant_ids": []
     }
 ]

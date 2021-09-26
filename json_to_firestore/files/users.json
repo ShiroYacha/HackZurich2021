@@ -3,7 +3,7 @@
         "id": "dD2gNSPcPqSdTTUW8JJiTkZHZOG3",
         "name": "Min",
         "avatar_url": "https://gravatar.com/avatar/99ccb3b8453ee55823743a265b0f865a?s=400&d=robohash&r=x",
-        "community_ids": [],
+        "community_ids": ["community1"],
         "event_ids": []
     },
     {

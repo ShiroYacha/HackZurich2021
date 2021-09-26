@@ -9,6 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import "package:flutter_feather_icons/flutter_feather_icons.dart";
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pinput/pin_put/pin_put.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
@@ -29,6 +30,8 @@ void main() async {
     overrides: [
       myUserIdProvider
           .overrideWithValue(StateController('dD2gNSPcPqSdTTUW8JJiTkZHZOG3')),
+      currentCommunityIdProvider
+          .overrideWithValue(StateController('community1')),
     ],
   ));
 }
@@ -430,6 +433,9 @@ class CommunityPage extends HookWidget {
                     final pendingEvents = es
                         .where((e) => e.status == EventStatus.pending)
                         .toList();
+                    final pastEvents = es
+                        .where((e) => e.status == EventStatus.completed)
+                        .toList();
                     return [
                       Text(
                         '${upcomingEvents.length} Upcoming quest(s)',
@@ -442,6 +448,7 @@ class CommunityPage extends HookWidget {
                             (e) => EventCard(e),
                           )
                           .toList(),
+                      spacerBig,
                       Text(
                         '${pendingEvents.length} Pending quest(s)',
                         style: buttonBigTextStyle,
@@ -453,8 +460,23 @@ class CommunityPage extends HookWidget {
                             (e) => EventCard(e),
                           )
                           .toList(),
+                      spacerBig,
+                      Text(
+                        '${pastEvents.length} Past quest(s)',
+                        style: buttonBigTextStyle,
+                      ).padHorizontal(),
+                      spacer,
+                      if (pastEvents.isEmpty) NoEventsLabel(),
+                      ...pastEvents
+                          .map(
+                            (e) => EventCard(e),
+                          )
+                          .toList(),
                     ];
                   }, orElse: () => [Loader()]),
+                  spacerHuge,
+                  spacerHuge,
+                  spacerHuge,
                 ],
               ),
             ),
@@ -591,7 +613,7 @@ class EventPage extends HookWidget {
     final eventSectionItemsRepository =
         useProvider(eventSectionItemsRepositoryProvider.notifier);
     useEffect(() {
-      if (eventState.state == null && events is Events) {
+      if (events is Events) {
         Future.microtask(() => eventState.state =
             events.events.singleWhereOrNull((e) => e.id == eventId));
       }
@@ -637,7 +659,7 @@ class EventPage extends HookWidget {
                       ],
                     ).padHorizontal(),
                     spacerSmall,
-                    EventCategorySection(EventCategory.hiking).padHorizontal(),
+                    EventCategorySection(event.category).padHorizontal(),
                     spacerSmall,
                     Text(
                       event.description,
@@ -708,7 +730,14 @@ class EventPage extends HookWidget {
                             title: 'Location',
                             actionText: 'Propose',
                             action: myDecision != null && decidedItem == null
-                                ? () {}
+                                ? () {
+                                    showModalBottomSheet(
+                                        context: context,
+                                        enableDrag: false,
+                                        backgroundColor: theme.backgroundColor,
+                                        builder: (ctx) =>
+                                            LocationSelectionPanel(event));
+                                  }
                                 : null,
                           ).padHorizontal(),
                           spacer,
@@ -781,7 +810,13 @@ class EventPage extends HookWidget {
               onPressed: () async {
                 if (myDecision == null) {
                   BotToast.showLoading();
-                  await eventRepository.joinEvent(event);
+                  if (event.status == EventStatus.upcoming) {
+                    await Future.delayed(Duration(seconds: 2), () {
+                      BotToast.showText(text: "Request sent");
+                    });
+                  } else {
+                    await eventRepository.joinEvent(event);
+                  }
                   BotToast.closeAllLoading();
                   return;
                 }
@@ -827,6 +862,37 @@ class EventPage extends HookWidget {
   }
 }
 
+class LocationSelectionPanel extends HookWidget {
+  final Event event;
+  const LocationSelectionPanel(this.event);
+
+  @override
+  Widget build(BuildContext context) {
+    final initPosition = useState(CameraPosition(
+        bearing: 192.8334901395799,
+        target: LatLng(47.36667, 8.55),
+        zoom: 10.151926040649414));
+    final width = MediaQuery.of(context).size.width;
+    return Column(mainAxisSize: MainAxisSize.min, children: [
+      SizedBox(
+        width: width,
+        height: width * 0.8,
+        child: GoogleMap(
+          mapType: MapType.normal,
+          initialCameraPosition: initPosition.value,
+          onMapCreated: (GoogleMapController controller) {},
+        ),
+      ),
+      spacerSmall,
+      ElevatedButton(
+        onPressed: () async {},
+        child: Text('Confirm'),
+      ),
+      spacerSmall,
+    ]);
+  }
+}
+
 class BackButton extends StatelessWidget {
   final bool upwards;
   const BackButton({
@@ -847,7 +913,7 @@ class BackButton extends StatelessWidget {
                   color: theme.primaryColor,
                   borderRadius: BorderRadius.circular(20)),
               padding:
-                  const EdgeInsets.only(left: 5, right: 5, top: 2, bottom: 5),
+                  const EdgeInsets.only(left: 5, right: 5, top: 5, bottom: 5),
               child: Text(
                 '	${upwards ? '↑' : '←'} Back  ',
                 style: buttonTextStyle,
