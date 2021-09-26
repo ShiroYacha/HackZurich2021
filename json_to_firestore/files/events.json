@@ -13,5 +13,20 @@
         "yes_participant_ids": ["user1", "user4"],
         "maybe_participant_ids": ["user2"],
         "no_participant_ids": []
+    },
+    {
+        "id": "event2",
+        "community_id": "community1",
+        "name": "Pajama hackathon",
+        "category": "hackathon",
+        "description": "Dress code: Pajama. Let's spend a day hacking to get the MVP out.",
+        "background_url": "assets/images/hz_roadtrip.gif",
+        "organizer_id": "user1",
+        "status": "upcoming",
+        "start_at": "2021/10/14T09:00:00",
+        "end_at": "2021/10/14T18:00:00",
+        "yes_participant_ids": ["user1", "user2", "user4", "user5"],
+        "maybe_participant_ids": [],
+        "no_participant_ids": ["user3"]
     }
 ]

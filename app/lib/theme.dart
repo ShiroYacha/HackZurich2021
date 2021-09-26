@@ -41,6 +41,7 @@ const buttonTextStyle = TextStyle(fontSize: 16, color: Colors.white);
 final paragraphTextStyle = GoogleFonts.montserrat()
     .copyWith(fontSize: 18, color: Colors.white, fontWeight: FontWeight.w100);
 final buttonBigTextStyle = buttonTextStyle.copyWith(fontSize: 20);
+final logoTextStyle = GoogleFonts.bungeeInline().copyWith(fontSize: 60);
 final titleTextStyle = buttonTextStyle.copyWith(fontSize: 36);
 final subtitleTextStyle = buttonTextStyle.copyWith(fontSize: 28);
 

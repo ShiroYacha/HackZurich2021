@@ -62,30 +62,58 @@ class MyApp extends HookWidget {
 class HomePage extends HookWidget {
   @override
   Widget build(BuildContext context) {
+    final me = useProvider(myUserProvider);
     return Scaffold(
-      body: Image.asset(
-        'assets/images/hz_background.gif',
-        fit: BoxFit.cover,
-        height: 1500,
+      body: Stack(
+        children: [
+          Image.asset(
+            'assets/images/hz_background.gif',
+            fit: BoxFit.cover,
+            height: 1800,
+            alignment: Alignment.bottomLeft,
+          ),
+          SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.only(right: 50, top: 20),
+              child: Lottie.asset(
+                'assets/lotties/hz_spaceship.json',
+              ),
+            ),
+          ),
+          SafeArea(
+            child: Padding(
+                padding: const EdgeInsets.all(24.0),
+                child: Text('OASIS',
+                    style: logoTextStyle.copyWith(
+                        color: Theme.of(context).primaryColor))),
+          ),
+        ],
       ),
       floatingActionButton: Padding(
-        child: FloatingActionButton.extended(
-          onPressed: () {
-            Navigator.of(context).push(
-              SlideBottomUpRoute(
-                enterWidget: FindTeamPage(),
-                oldWidget: this,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            FloatingActionButton.extended(
+              onPressed: () {
+                Navigator.of(context).push(
+                  SlideBottomUpRoute(
+                    enterWidget: FindTeamPage(),
+                    oldWidget: this,
+                  ),
+                );
+              },
+              icon: Icon(
+                FeatherIcons.radio,
+                size: 20,
               ),
-            );
-          },
-          icon: Icon(
-            FeatherIcons.radio,
-            size: 20,
-          ),
-          label: Text(
-            "Find my team",
-            style: buttonTextStyle,
-          ),
+              label: Text(
+                "Find my team",
+                style: buttonTextStyle,
+              ),
+            ),
+            SizedBox(width: 10),
+            Avatar(me.state!.avatarUrl!, radius: 24),
+          ],
         ),
         padding: const EdgeInsets.all(20),
       ),
@@ -468,23 +496,27 @@ class EventCard extends HookWidget {
               Navigator.of(context)
                   .push(CupertinoPageRoute(builder: (ctx) => EventPage()));
             },
-            child: ListTile(
-              tileColor: theme.primaryColor,
-              contentPadding: const EdgeInsets.all(10),
-              leading: Icon(
-                event.category.icon,
-                color: Colors.white,
-                size: 30,
-              ),
-              title: Text(
-                event.name,
-                style: buttonBigTextStyle,
-              ),
-              subtitle: Text(
-                event.description,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: paragraphTextStyle,
+            child: AnimatedOpacity(
+              duration: Duration(seconds: 1),
+              opacity: 1.0,
+              child: ListTile(
+                tileColor: theme.primaryColor,
+                contentPadding: const EdgeInsets.all(10),
+                leading: Icon(
+                  event.category.icon,
+                  color: Colors.white,
+                  size: 30,
+                ),
+                title: Text(
+                  event.name,
+                  style: buttonBigTextStyle,
+                ),
+                subtitle: Text(
+                  event.description,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: paragraphTextStyle,
+                ),
               ),
             ),
           ),
@@ -503,10 +535,12 @@ class EventCard extends HookWidget {
 
 class Avatar extends StatelessWidget {
   final String uri;
+  final double? radius;
   final EventDecision? decision;
   const Avatar(
     this.uri, {
     this.decision,
+    this.radius,
     Key? key,
   }) : super(key: key);
 
@@ -516,7 +550,7 @@ class Avatar extends StatelessWidget {
     return Stack(
       children: [
         CircleAvatar(
-          radius: 30,
+          radius: radius ?? 30,
           backgroundColor: theme.shadowColor,
           child: ClipOval(
             child: CachedNetworkImage(
