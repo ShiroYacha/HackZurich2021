@@ -34,6 +34,8 @@ final communitiesRepositoryProvider =
 
 final currentEventIdProvider = StateProvider<String?>((ref) => null);
 
+final currentEventProvider = StateProvider<Event?>((ref) => null);
+
 final eventsRepositoryProvider =
     StateNotifierProvider<EventsRepository, EventsUnion>(
         (ref) => EventsRepository(ref));
@@ -63,9 +65,9 @@ class UsersRepository extends StateNotifier<UsersUnion> {
     final myUser = _ref.read(myUserProvider);
     try {
       final users = await firebaseService.loadCollection<User>(
-        ["users"],
+        ['users'],
         (snapshot, options) => User.fromJson(
-            <String, dynamic>{"id": snapshot.id}..addAll(snapshot.data()!)),
+            <String, dynamic>{'id': snapshot.id}..addAll(snapshot.data()!)),
         wheres: wheres,
       );
       state = UsersUnion(users: users);
@@ -74,7 +76,7 @@ class UsersRepository extends StateNotifier<UsersUnion> {
       }
     } on FirebaseException catch (e) {
       state = UsersUnion.error(ErrorResult(
-          message: "${e.code} = ${e.message}", status: "APP_ERROR"));
+          message: '${e.code} = ${e.message}', status: 'APP_ERROR'));
     }
   }
 }
@@ -84,8 +86,17 @@ class CommunitiesRepository extends StateNotifier<CommunitiesUnion> {
 
   CommunitiesRepository(this._ref) : super(CommunitiesUnion.loading());
 
+  Future<Community?> findCommunityByCode(String code) async {
+    final firebaseService = _ref.read(firebaseServiceProvider);
+    final result = await firebaseService
+        .callFunctionForResult('findCommunityByCode', data: {'code': code});
+    if (result == null) {
+      return null;
+    }
+    return Community.fromJson(result);
+  }
+
   Future loadCommunities() async {
-    // load my user data from remote
     final firebaseService = _ref.read(firebaseServiceProvider);
     final communityId = _ref.read(currentCommunityIdProvider);
     final community = _ref.read(currentCommunityProvider);
@@ -94,9 +105,9 @@ class CommunitiesRepository extends StateNotifier<CommunitiesUnion> {
       try {
         final communities =
             await firebaseService.loadCollectionByIds<Community>(
-          ["communities"],
+          ['communities'],
           (snapshot, options) => Community.fromJson(
-              <String, dynamic>{"id": snapshot.id}..addAll(snapshot.data()!)),
+              <String, dynamic>{'id': snapshot.id}..addAll(snapshot.data()!)),
           user.state!.communityIds,
         );
         state = CommunitiesUnion(communities: communities);
@@ -106,7 +117,7 @@ class CommunitiesRepository extends StateNotifier<CommunitiesUnion> {
         }
       } on FirebaseException catch (e) {
         state = CommunitiesUnion.error(ErrorResult(
-            message: "${e.code} = ${e.message}", status: "APP_ERROR"));
+            message: '${e.code} = ${e.message}', status: 'APP_ERROR'));
       }
     }
   }
@@ -120,22 +131,90 @@ class EventsRepository extends StateNotifier<EventsUnion> {
   EventsRepository(this._ref) : super(EventsUnion.loading());
 
   Future loadEvents() async {
-    // load my user data from remote
     final firebaseService = _ref.read(firebaseServiceProvider);
     final communityId = _ref.read(currentCommunityIdProvider);
+    final eventId = _ref.read(currentEventIdProvider);
+    final event = _ref.read(currentEventProvider);
     _eventsStreamSubscription?.cancel();
     _eventsStreamSubscription = firebaseService
         .listenToCollection<Event>(
-            ["events"],
+            ['events'],
             (snapshot, options) => Event.fromJson(
-                <String, dynamic>{"id": snapshot.id}..addAll(snapshot.data()!)),
+                <String, dynamic>{'id': snapshot.id}..addAll(snapshot.data()!)),
             wheres: [
-              Where("community_id", isEqualTo: communityId.state),
+              Where('community_id', isEqualTo: communityId.state),
             ])
         .listen((events) {
       if (mounted) {
         state = EventsUnion(events: events);
+        // Refresh current if possible
+        final currentEvent =
+            events.singleWhereOrNull((e) => e.id == eventId.state);
+        if (currentEvent != null) {
+          event.state = currentEvent;
+        }
       }
+    });
+  }
+
+  Future<void> changeEventDecision(Event event, EventDecision decision) async {
+    final firebaseService = _ref.read(firebaseServiceProvider);
+    final myId = _ref.read(myUserIdProvider).state!;
+    // Update event
+    await firebaseService.updateDocument(
+      ['events', event.id],
+      _renderDecisionUpdateMap(myId, decision),
+    );
+  }
+
+  Future<void> changeEventSectionDecision(
+      EventSectionItemUnion eventSection, EventDecision decision) async {
+    final firebaseService = _ref.read(firebaseServiceProvider);
+    final myId = _ref.read(myUserIdProvider).state!;
+    // Update event
+    await firebaseService.updateDocument(
+      ['event_sections', eventSection.id],
+      _renderDecisionUpdateMap(myId, decision),
+    );
+  }
+
+  Map<String, dynamic> _renderDecisionUpdateMap(
+      String myId, EventDecision decision) {
+    return decision == EventDecision.yes
+        ? {
+            'yes_participant_ids': FieldValue.arrayUnion([myId]),
+            'maybe_participant_ids': FieldValue.arrayRemove([myId]),
+            'no_participant_ids': FieldValue.arrayRemove([myId]),
+          }
+        : (decision == EventDecision.maybe
+            ? {
+                'yes_participant_ids': FieldValue.arrayRemove([myId]),
+                'maybe_participant_ids': FieldValue.arrayUnion([myId]),
+                'no_participant_ids': FieldValue.arrayRemove([myId]),
+              }
+            : {
+                'yes_participant_ids': FieldValue.arrayRemove([myId]),
+                'maybe_participant_ids': FieldValue.arrayRemove([myId]),
+                'no_participant_ids': FieldValue.arrayUnion([myId]),
+              });
+  }
+
+  Future<void> joinEvent(Event event) async {
+    final firebaseService = _ref.read(firebaseServiceProvider);
+    final myId = _ref.read(myUserIdProvider).state!;
+    // Update user
+    await firebaseService.updateDocument([
+      'users',
+      myId
+    ], {
+      'event_ids': FieldValue.arrayUnion([event.id]),
+    });
+    // Update event
+    await firebaseService.updateDocument([
+      'events',
+      event.id
+    ], {
+      'maybe_participant_ids': FieldValue.arrayUnion([myId]),
     });
   }
 }
@@ -155,11 +234,11 @@ class EventSectionItemsRepository
     _eventsStreamSubscription?.cancel();
     _eventsStreamSubscription = firebaseService
         .listenToCollection<EventSectionItemUnion>(
-            ["event_sections"],
+            ['event_sections'],
             (snapshot, options) => EventSectionItemUnion.fromJson(
-                <String, dynamic>{"id": snapshot.id}..addAll(snapshot.data()!)),
+                <String, dynamic>{'id': snapshot.id}..addAll(snapshot.data()!)),
             wheres: [
-              Where("event_id", isEqualTo: eventId.state),
+              Where('event_id', isEqualTo: eventId.state),
             ])
         .listen((events) {
       if (mounted) {

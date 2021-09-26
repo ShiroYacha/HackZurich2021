@@ -10,12 +10,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import "package:flutter_feather_icons/flutter_feather_icons.dart";
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:pinput/pin_put/pin_put.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 import 'package:lottie/lottie.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:bot_toast/bot_toast.dart';
 
 import 'model.dart';
 import 'page_routing.dart';
@@ -53,7 +53,10 @@ class MyApp extends HookWidget {
     }, [myId]);
     return MaterialApp(
       theme: themeData,
-      home: me.state != null ? CommunityPage() : Loader(),
+      builder: BotToastInit(),
+      navigatorObservers: [BotToastNavigatorObserver()],
+      home: me.state != null ? HomePage() : Loader(),
+      // home: me.state != null ? CommunityPage() : Loader(),
     );
   }
 }
@@ -103,7 +106,6 @@ class FindTeamPage extends HookWidget {
       border: Border.all(color: theme.colorScheme.secondary, width: 5),
       borderRadius: BorderRadius.circular(15.0),
     );
-    final codeFound = useState(false);
 
     final speechAnimController = useAnimationController();
     final speechMicAnimController = useAnimationController();
@@ -111,8 +113,15 @@ class FindTeamPage extends HookWidget {
     final speechEnabled = useState(false);
     final speechRecording = useState(false);
     final speechMagicWordFound = useState(false);
+
+    final communityToJoin = useState<Community?>(null);
+    final communitiesRepository =
+        useProvider(communitiesRepositoryProvider.notifier);
+
+    final codeFound = communityToJoin.value != null;
+
     useEffect(() {
-      if (codeFound.value) {
+      if (codeFound) {
         speech.initialize().then((value) {
           speechEnabled.value = value;
         });
@@ -120,14 +129,16 @@ class FindTeamPage extends HookWidget {
         codeFocusNode.requestFocus();
       }
       return;
-    }, [codeFound.value]);
+    }, [codeFound]);
     void _onSpeechResult(
       SpeechRecognitionResult result,
     ) {
       print(result.recognizedWords);
       final theme = Theme.of(context);
-      if (!speechMagicWordFound.value &&
-          result.recognizedWords.toLowerCase() == 'red pill'.toLowerCase()) {
+      if (codeFound &&
+          !speechMagicWordFound.value &&
+          result.recognizedWords.toLowerCase() ==
+              communityToJoin.value?.magic_word.toLowerCase()) {
         speechMagicWordFound.value = true;
         speechRecording.value = false;
         showModalBottomSheet(
@@ -184,19 +195,22 @@ class FindTeamPage extends HookWidget {
                   children: [
                     spacer,
                     Text(
-                      codeFound.value ? 'Your code' : 'Enter your code',
+                      codeFound ? 'Your code' : 'Enter your code',
                       style: buttonBigTextStyle,
                     ),
                     spacer,
                     PinPut(
                       fieldsCount: 5,
-                      onSubmit: (String pin) {
+                      onSubmit: (String pin) async {
                         codeFocusNode.unfocus();
-                        Future.delayed(Duration(seconds: 1), () {
-                          codeFound.value = true;
-                        });
+                        final community = await communitiesRepository
+                            .findCommunityByCode(pin);
+                        communityToJoin.value = community;
+                        if (communityToJoin.value == null) {
+                          BotToast.showText(text: 'Not found');
+                        }
                       },
-                      enabled: !codeFound.value,
+                      enabled: !codeFound,
                       focusNode: codeFocusNode,
                       controller: codeController,
                       submittedFieldDecoration: codeDecoration.copyWith(
@@ -216,7 +230,7 @@ class FindTeamPage extends HookWidget {
                     ).padHorizontal(40),
                     spacer,
                     spacerHuge,
-                    if (codeFound.value)
+                    if (codeFound)
                       GestureDetector(
                         child: CircleAvatar(
                           backgroundColor: theme.colorScheme.secondary,
@@ -248,7 +262,7 @@ class FindTeamPage extends HookWidget {
                       ),
                     spacerBig,
                     AnimatedOpacity(
-                      opacity: codeFound.value ? 1 : 0,
+                      opacity: codeFound ? 1 : 0,
                       duration: _animationDuration,
                       child: Text(
                         'Say the magic word',
@@ -445,7 +459,7 @@ class EventCard extends HookWidget {
             onTap: () {
               currentEventId.state = event.id;
               Navigator.of(context)
-                  .push(CupertinoPageRoute(builder: (ctx) => EventPage(event)));
+                  .push(CupertinoPageRoute(builder: (ctx) => EventPage()));
             },
             child: ListTile(
               tileColor: theme.primaryColor,
@@ -519,13 +533,16 @@ class Avatar extends StatelessWidget {
 }
 
 class EventPage extends HookWidget {
-  final Event event;
-  const EventPage(this.event);
+  const EventPage();
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final myId = useProvider(myUserIdProvider);
+    final eventId = useProvider(currentEventIdProvider).state;
+    final eventState = useProvider(currentEventProvider);
+    final events = useProvider(eventsRepositoryProvider);
+    final eventRepository = useProvider(eventsRepositoryProvider.notifier);
     final eventUsers = useProvider(eventUsersRepositoryProvider);
     final eventUsersRepository =
         useProvider(eventUsersRepositoryProvider.notifier);
@@ -533,10 +550,17 @@ class EventPage extends HookWidget {
     final eventSectionItemsRepository =
         useProvider(eventSectionItemsRepositoryProvider.notifier);
     useEffect(() {
+      if (eventState.state == null && events is Events) {
+        Future.microtask(() => eventState.state =
+            events.events.singleWhereOrNull((e) => e.id == eventId));
+      }
       eventUsersRepository.loadUsers();
       eventSectionItemsRepository.loadEventSectionItems();
-    }, [event]);
-
+    }, [eventId]);
+    final event = eventState.state;
+    if (event == null) {
+      return Loader();
+    }
     final myDecision = event.participantDecision(myId.state!);
     return Scaffold(
         backgroundColor: theme.backgroundColor,
@@ -561,13 +585,14 @@ class EventPage extends HookWidget {
                             style: titleTextStyle,
                           ),
                         ),
-                        IconButton(
-                            icon: Icon(
-                              FeatherIcons.settings,
-                              color: Colors.white,
-                              size: 28,
-                            ),
-                            onPressed: () {}),
+                        if (event.organizerId == myId)
+                          IconButton(
+                              icon: Icon(
+                                FeatherIcons.settings,
+                                color: Colors.white,
+                                size: 28,
+                              ),
+                              onPressed: () {}),
                       ],
                     ).padHorizontal(),
                     spacerSmall,
@@ -581,12 +606,7 @@ class EventPage extends HookWidget {
                     SectionTitle(
                       title: 'Participants',
                       actionText: 'Invite',
-                      action: () {
-                        showModalBottomSheet(
-                            context: context,
-                            backgroundColor: theme.backgroundColor,
-                            builder: (ctx) => ParticipantInvitePanel());
-                      },
+                      action: myDecision == null ? null : () {},
                     ).padHorizontal(),
                     spacerSmall,
                     eventUsers
@@ -624,14 +644,16 @@ class EventPage extends HookWidget {
                           SectionTitle(
                             title: 'Time',
                             actionText: 'Propose',
-                            action: decidedItem == null ? () {} : null,
+                            action: myDecision != null && decidedItem == null
+                                ? () {}
+                                : null,
                           ).padHorizontal(),
                           spacer,
                           ...(decidedItem != null
                                   ? [decidedItem]
                                   : value.eventSectionItems)
                               .whereType<EventTimeSection>()
-                              .map((e) => SectionDecisionBox(e))
+                              .map((e) => SectionDecisionBox(event, e))
                         ]);
                       }
                       if (value.eventSectionItems
@@ -644,14 +666,16 @@ class EventPage extends HookWidget {
                           SectionTitle(
                             title: 'Location',
                             actionText: 'Propose',
-                            action: decidedItem == null ? () {} : null,
+                            action: myDecision != null && decidedItem == null
+                                ? () {}
+                                : null,
                           ).padHorizontal(),
                           spacer,
                           ...(decidedItem != null
                                   ? [decidedItem]
                                   : value.eventSectionItems)
                               .whereType<EventLocationSection>()
-                              .map((e) => SectionDecisionBox(e))
+                              .map((e) => SectionDecisionBox(event, e))
                         ]);
                       }
                       if (value.eventSectionItems
@@ -664,14 +688,16 @@ class EventPage extends HookWidget {
                           SectionTitle(
                             title: 'Lunch',
                             actionText: 'Propose',
-                            action: decidedItem == null ? () {} : null,
+                            action: myDecision != null && decidedItem == null
+                                ? () {}
+                                : null,
                           ).padHorizontal(),
                           spacer,
                           ...(decidedItem != null
                                   ? [decidedItem]
                                   : value.eventSectionItems)
                               .whereType<EventLunchSection>()
-                              .map((e) => SectionDecisionBox(e))
+                              .map((e) => SectionDecisionBox(event, e))
                         ]);
                       }
                       if (value.eventSectionItems
@@ -684,14 +710,16 @@ class EventPage extends HookWidget {
                           SectionTitle(
                             title: 'Dinner',
                             actionText: 'Propose',
-                            action: decidedItem == null ? () {} : null,
+                            action: myDecision != null && decidedItem == null
+                                ? () {}
+                                : null,
                           ).padHorizontal(),
                           spacer,
                           ...(decidedItem != null
                                   ? [decidedItem]
                                   : value.eventSectionItems)
                               .whereType<EventDinnerSection>()
-                              .map((e) => SectionDecisionBox(e))
+                              .map((e) => SectionDecisionBox(event, e))
                         ]);
                       }
                       return items;
@@ -706,39 +734,55 @@ class EventPage extends HookWidget {
             BackButton(),
           ],
         ),
-        floatingActionButton: FloatingActionButton.extended(
-            onPressed: () {
-              showModalBottomSheet(
-                  context: context,
-                  backgroundColor: theme.backgroundColor,
-                  builder: (ctx) => Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        EventDecision.yes,
-                        EventDecision.maybe,
-                        EventDecision.no,
-                      ]
-                          .map(
-                            (e) => InkWell(
-                              onTap: () {},
-                              child: SizedBox(
-                                height: 60,
-                                child: ListTile(
-                                  leading: Icon(e.icon, color: Colors.white),
-                                  title: Text(
-                                    e.title,
-                                    style: buttonBigTextStyle,
+        floatingActionButton: Padding(
+          padding: const EdgeInsets.only(bottom: 10),
+          child: FloatingActionButton.extended(
+              onPressed: () async {
+                if (myDecision == null) {
+                  BotToast.showLoading();
+                  await eventRepository.joinEvent(event);
+                  BotToast.closeAllLoading();
+                  return;
+                }
+                final decision = await showModalBottomSheet(
+                    context: context,
+                    backgroundColor: theme.backgroundColor,
+                    builder: (ctx) => Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          EventDecision.yes,
+                          EventDecision.maybe,
+                          EventDecision.no,
+                        ]
+                            .map(
+                              (e) => InkWell(
+                                onTap: () {
+                                  Navigator.of(ctx).pop(e);
+                                },
+                                child: SizedBox(
+                                  height: 60,
+                                  child: ListTile(
+                                    leading: Icon(e.icon, color: Colors.white),
+                                    title: Text(
+                                      e.title,
+                                      style: buttonBigTextStyle,
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          )
-                          .toList()));
-            },
-            backgroundColor: myDecision?.color ?? theme.colorScheme.secondary,
-            icon: Icon(myDecision?.icon ?? FeatherIcons.userPlus),
-            label: Text(myDecision?.longTitle ?? 'I want to join',
-                style: buttonTextStyle)));
+                            )
+                            .toList()));
+                if (decision != null) {
+                  BotToast.showLoading();
+                  await eventRepository.changeEventDecision(event, decision);
+                  BotToast.closeAllLoading();
+                }
+              },
+              backgroundColor: myDecision?.color ?? theme.colorScheme.secondary,
+              icon: Icon(myDecision?.icon ?? FeatherIcons.userPlus),
+              label: Text(myDecision?.longTitle ?? 'I want to join',
+                  style: buttonTextStyle)),
+        ));
   }
 }
 
@@ -780,13 +824,16 @@ class BackButton extends StatelessWidget {
 }
 
 class SectionDecisionBox extends HookWidget {
+  final Event event;
   final EventSectionItemUnion item;
-  const SectionDecisionBox(this.item);
+  const SectionDecisionBox(this.event, this.item);
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final slideOpened = useState(false);
+    final myId = useProvider(myUserIdProvider);
+    final eventsRepository = useProvider(eventsRepositoryProvider.notifier);
     return SlidableNotificationListener(
       onNotification: (notification) {
         if (notification is SlidableRatioNotification) {
@@ -804,13 +851,19 @@ class SectionDecisionBox extends HookWidget {
                 top: 14,
               ),
               child: Slidable(
+                enabled: event.participantDecision(myId.state!) != null,
                 closeOnScroll: true,
                 endActionPane: ActionPane(
                   motion: ScrollMotion(),
                   children: EventDecision.values
                       .map(
                         (e) => SlidableAction(
-                          onPressed: (ctx) {},
+                          onPressed: (ctx) async {
+                            BotToast.showLoading();
+                            await eventsRepository.changeEventSectionDecision(
+                                item, e);
+                            BotToast.closeAllLoading();
+                          },
                           backgroundColor: e.color,
                           foregroundColor: Colors.white,
                           icon: e.icon,

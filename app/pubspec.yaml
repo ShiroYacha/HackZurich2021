@@ -40,6 +40,7 @@ dependencies:
   flutter_slidable: ^1.0.0-dev.9
   cloud_functions: ^3.0.3
   tuple: ^2.0.0
+  bot_toast: ^4.0.1
   
 dev_dependencies:
   flutter_test:

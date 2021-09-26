@@ -101,7 +101,10 @@ class FirebaseService {
   }
 
   DocumentReference<T> _buildDocumentQuery<T>(
-      List<String> path, FromFirestore<T> fromFirestore) {
+    List<String> path, {
+    FromFirestore<T>? fromFirestore,
+    ToFirestore<T>? toFirestore,
+  }) {
     assert(path.length % 2 == 0);
     dynamic query;
     for (var i = 0; i < path.length; i++) {
@@ -112,14 +115,16 @@ class FirebaseService {
       }
     }
     return (query as DocumentReference).withConverter(
-      fromFirestore: fromFirestore,
-      toFirestore: (value, options) => throw UnsupportedError("CANNOT_WRITE"),
+      fromFirestore: fromFirestore ??
+          (value, options) => throw UnsupportedError("CANNOT_READ"),
+      toFirestore: toFirestore ??
+          (value, options) => throw UnsupportedError("CANNOT_WRITE"),
     );
   }
 
   Stream<T?> listenToDocument<T>(
       List<String> path, FromFirestore<T> fromFirestore) {
-    return _buildDocumentQuery(path, fromFirestore)
+    return _buildDocumentQuery(path, fromFirestore: fromFirestore)
         .snapshots()
         .map((d) => d.data());
   }
@@ -163,5 +168,10 @@ class FirebaseService {
         return d.data()!;
       });
     }));
+  }
+
+  Future updateDocument(List<String> path, Map<String, dynamic> data) {
+    final query = _buildDocumentQuery(path, toFirestore: (_, __) => data);
+    return query.update(data);
   }
 }
